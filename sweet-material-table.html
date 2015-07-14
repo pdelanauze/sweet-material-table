@@ -314,7 +314,6 @@
      *
      * TODO
      *
-     * - Select all
      * - integrate iron-list
      * - Custom cell renderers (provide any element tag name you want)
      * - th paper-tooltips
@@ -338,6 +337,9 @@
         columns: {
           type: Array,
           notify: true
+        },
+        availableColumns: {
+          type: Array
         },
         perPage: {
           type: Number,
@@ -535,9 +537,11 @@
         var rows = this.$.table.querySelectorAll('.tbody .tr');
         for (var i = 0, ii = rows.length; i < ii; i++) {
           rows[i].querySelector('.td:first-child paper-checkbox').checked = false;
+          rows[i].classList.remove('selected');
         }
         for (var i = 0, ii = this.selectedIndexes.length; i < ii; i++) {
           rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
+          rows[i].classList.add('selected');
         }
 
         this.$.selectAll.checked = (this.selectedIndexes && this.data && this.selectedIndexes.length === this.data.length);
