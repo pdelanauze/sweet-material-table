@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>sweet-material-table Demo</title>
   <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-  <link rel="import" href="../sweet-material-table.html">
+  <link rel="import" href="sweet-material-table-schema-demo.html">
+  <link rel="import" href="sweet-material-table-normal-demo.html">
   <link rel="import" href="../../paper-styles/paper-styles.html">
 
   <style is="custom-style">
@@ -22,59 +23,9 @@
 </head>
 <body>
 
+<sweet-material-table-schema-demo></sweet-material-table-schema-demo>
 
-<sweet-material-table>
-
-</sweet-material-table>
-
-
-<script>
-  var tableEl = document.querySelector('sweet-material-table');
-  tableEl.schema = {
-    title: 'Blog posts',
-    properties: {
-      title: {
-        type: 'string',
-        title: 'Title'
-      },
-      content: {
-        type: 'string',
-        title: 'Content'
-      },
-      createdAt: {
-        type: 'date',
-        title: 'Created at'
-      }
-    }
-  };
-
-  tableEl.data = [
-    {
-      title: 'First blog post',
-      content: 'This is the content of the first blog post , bla bla tech bla dev bla polymer bla bla...',
-      createdAt: new Date()
-    },
-    {
-      title: 'Second blog post',
-      content: 'This is the content of the second blog post , bla bla tech bla dev bla more polymer bla bla...',
-      createdAt: new Date(),
-      id: 3
-    }
-  ];
-
-  tableEl.perPage = 50;
-  tableEl.start = 0;
-  tableEl.total = 150;
-
-  setTimeout(function(){
-    tableEl.push('availableColumns', {
-      key: 'id',
-      title: 'ID'
-    });
-  }, 200);
-
-
-</script>
+<sweet-material-table-normal-demo></sweet-material-table-normal-demo>
 
 </body>
 </html>
