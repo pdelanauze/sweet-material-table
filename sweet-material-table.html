@@ -310,7 +310,7 @@
      * Events thrown by this module:
      * - perPage-changed, with the `event.detail` property having the new perPage value
      * - start-changed, with the `event.detail` property having the new start value
-     * - sort-changed, with an object having the column name and direction in event.detail , as such: `{column: 'name', direction: 'ascending'}` (or 'desc', or null, in case natural order has been requested)
+     * - sort-changed, with an object having the column name and direction in event.detail , as such: `{column: 'name', direction: 'ascending'}` (or 'descending', or null, in case natural order has been requested)
      *
      * Events are manually fired in case you want to use this component from pure javascript, but the perPage, start,
      * sortColumn and sortDirection do have notify: true set on them.
