@@ -16,9 +16,11 @@ TODO Add link to demo
 
 ## Development
 
+To get started , first `npm install && ./node_modules/.bin/bower install`
+
 To test out the app locally , create a symlink to this component inside the bower_components folder.
 
-`cd bower_components && ln -s ../ sweet-material-table`
+`cd bower_components && ln -s ../ sweet-material-table && cd ..`
 
 To run
 
@@ -26,4 +28,4 @@ To run
 
 To reach the demo page
 
-`python -m SimpleHTTPServer && open http://localhost:8000/bower_components/demo/index.html`
+`python -m SimpleHTTPServer && open http://localhost:8000/bower_components/sweet-material-table/demo/index.html`
