@@ -1,0 +1,150 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('selection functionality', function () {
+      beforeEach(function (done) {
+        tableEl.schema = {
+          title: 'Products',
+          properties: {
+            id: {
+              type: 'string',
+              title: 'ID'
+            },
+            sku: {
+              type: 'string',
+              title: 'SKU'
+            },
+            content: {
+              type: 'string',
+              title: 'Title'
+            },
+            price: {
+              type: 'number',
+              title: 'Price'
+            }
+          }
+        };
+
+        tableEl.data = [
+          {
+            sku: 'SK-123',
+            title: 'SK product',
+            price: 12.22,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-124',
+            title: 'SK product 2',
+            price: 0.99,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-125',
+            title: 'SK product 3',
+            price: 19.99,
+            salePrice: 9.00
+          }
+        ];
+
+        tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+
+        tableEl.perPage = 100;
+        tableEl.sortColumn = null;
+        tableEl.sortDirection = null;
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should append to the selected array when first selecting a row', function (done) {
+        var cellCheckbox = tableEl.$.table.querySelector('.tbody .tr .td:first-child paper-checkbox');
+        cellCheckbox.click();
+        expect(tableEl.selectedIndexes.length).to.equal(1);
+        done();
+      });
+
+      it('should append to selected array when clicking a second row', function (done) {
+        var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
+
+        rows[0].querySelector('.td:first-child paper-checkbox').click();
+        rows[1].querySelector('.td:first-child paper-checkbox').click();
+
+        expect(tableEl.selectedIndexes.length).to.equal(2);
+        done();
+      });
+
+      it('should remove a selection when clicking a selected row', function (done) {
+        tableEl.$.table.querySelector('.tbody .tr .td:first-child paper-checkbox').click();
+        expect(tableEl.selectedIndexes.length).to.equal(1);
+
+        tableEl.$.table.querySelector('.tbody .tr .td:first-child paper-checkbox').click();
+        expect(tableEl.selectedIndexes.length).to.equal(0);
+
+        done();
+      });
+
+      it('should select all rows when clicking select all', function (done) {
+        tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox').click();
+        expect(tableEl.selectedIndexes.length).to.equal(tableEl.data.length);
+        done();
+      });
+
+      it('should unselect all rows when clicking select all and all rows are selected', function (done) {
+        tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox').click();
+        expect(tableEl.selectedIndexes.length).to.equal(tableEl.data.length);
+        tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox').click();
+        expect(tableEl.selectedIndexes.length).to.equal(0);
+        done();
+      });
+
+      it('should mark the select all button as checked when all items are selected', function (done) {
+        // This works , just test it please
+        expect(true).to.be.false;
+        done();
+      });
+
+      it('should uncheck the select all button when an item is removed from the selection', function (done) {
+        // This works , just test it please
+        expect(true).to.be.false;
+        done();
+      });
+
+      it('should should be able to dispatch a bulk operation', function (done) {
+        expect(false).to.be.true;
+        done();
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>

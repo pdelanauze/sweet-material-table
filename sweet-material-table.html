@@ -239,7 +239,7 @@
         <div class="thead">
           <div class="tr horizontal layout">
             <div class="th checkbox">
-              <paper-checkbox id="selectAll"></paper-checkbox>
+              <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
             </div>
             <template is="dom-repeat" items="{{columns}}" as="column">
               <div class="th flex" data-column$="[[column.key]]" on-click="_sortColumn">
@@ -258,9 +258,9 @@
         <div class="tbody" id="tbody">
 
           <template is="dom-repeat" items="{{data}}" as="instance">
-            <div class="tr horizontal layout" index$="{{index}}">
+            <div class="tr horizontal layout" index="[[index]]">
               <div class="td checkbox">
-                <paper-checkbox></paper-checkbox>
+                <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
               </div>
 
               <template is="dom-repeat" items="{{columns}}" as="column">
@@ -364,10 +364,15 @@
         sortDirection: {
           type: String,
           notify: true
+        },
+        selectedIndexes: {
+          type: Array,
+          notify: true
         }
       },
       observers: [
         '_schemaChanged(schema)',
+        '_selectedIndexesChanged(selectedIndexes.splices)',
         '_paginationChanged(start,perPage,total)',
         '_sortDirectionChanged(sortColumn,sortDirection)'
       ],
@@ -377,6 +382,7 @@
         this.total = 0;
         this.columns = [];
         this.availableColumns = [];
+        this.selectedIndexes = [];
       },
       _schemaChanged: function () {
         if (!this.columns.length) {
@@ -430,7 +436,6 @@
           el.style.display = 'none';
         }
       },
-
 
       _nextPageClicked: function (e) {
         if (e.currentTarget.className.match(/disabled/)) {
@@ -515,6 +520,40 @@
             th.classList.add('sorted-' + this.sortDirection);
           }
         }
+      },
+
+      _selectAll: function () {
+        if (this.selectedIndexes.length === this.data.length) {
+          this.splice('selectedIndexes', 0, this.data.length);
+        } else {
+          for (var i = 0, ii = this.data.length; i < ii; i++) {
+            this.splice('selectedIndexes', 0, this.selectedIndexes.length - 1);
+            this.push('selectedIndexes', i);
+          }
+        }
+      },
+      _selectRow: function (e) {
+        var index = e.currentTarget.index;
+        var indexOf = this.selectedIndexes.indexOf(index);
+        if (indexOf === -1) {
+          this.push('selectedIndexes', index);
+        } else {
+          this.splice('selectedIndexes', indexOf, 1);
+        }
+      },
+      _isRowSelected: function (index) {
+        return this.selectedIndexes.indexOf(index) !== -1;
+      },
+      _selectedIndexesChanged: function () {
+        var rows = this.$.table.querySelectorAll('.tbody .tr');
+        for (var i = 0, ii = rows.length; i < ii; i++) {
+          rows[i].querySelector('.td:first-child paper-checkbox').checked = false;
+        }
+        for (var i = 0, ii = this.selectedIndexes.length; i < ii; i++) {
+          rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
+        }
+
+        this.$.selectAll.checked = this.selectedIndexes.length === this.data.length;
       },
 
       detached: function () {
