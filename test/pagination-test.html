@@ -1,0 +1,234 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('pagination functionality', function () {
+      beforeEach(function (done) {
+        tableEl.schema = {
+          title: 'Products',
+          properties: {
+            sku: {
+              type: 'string',
+              title: 'SKU'
+            },
+            content: {
+              type: 'string',
+              title: 'Title'
+            },
+            price: {
+              type: 'number',
+              title: 'Price'
+            }
+          }
+        };
+
+        tableEl.data = [
+          {
+            sku: 'SK-123',
+            title: 'SK product',
+            price: 12.22
+          },
+          {
+            sku: 'SK-124',
+            title: 'SK product 2',
+            price: 0.99
+          },
+          {
+            sku: 'SK-125',
+            title: 'SK product 3',
+            price: 19.99
+          }
+        ];
+
+        tableEl.perPage = 50;
+        tableEl.start = 0;
+        tableEl.total = 200;
+
+        tableEl.$.nextPage.classList.remove('disabled');
+        tableEl.$.previousPage.classList.remove('disabled');
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should fire an event when the perPage selection changes', function (done) {
+
+        tableEl.addEventListener('perPage-changed', function (newPerPageEvent) {
+
+          expect(newPerPageEvent.detail).to.equal(50);
+
+          newPerPageEvent.target.removeEventListener(newPerPageEvent.type, arguments.callee);
+          done();
+        });
+
+        tableEl.$.perPageMenu.querySelector('paper-item[value="50"]').click();
+
+      });
+
+      it('should update the selection in the view when the perPage attribute is changed', function (done) {
+
+        var perPageValue = tableEl.perPage;
+        var perPageLabel = tableEl.$.perPageValue;
+        expect(perPageLabel.innerHTML).to.match(new RegExp(perPageValue));
+
+        perPageValue = tableEl.perPage = 50;
+        expect(perPageLabel.innerHTML).to.match(new RegExp(perPageValue));
+
+        done();
+
+      });
+
+      it('should fire an event when the next page is clicked', function (done) {
+        var currentStartValue = tableEl.start;
+        var perPage = tableEl.perPage;
+
+        tableEl.addEventListener('start-changed', function (startChangeEvent) {
+
+          expect(startChangeEvent.detail).to.equal(currentStartValue + perPage);
+
+          startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
+          done();
+
+        });
+
+        tableEl.$.nextPage.click();
+
+      });
+
+      it('should fire an event when the previous page is clicked', function (done) {
+        var currentStartValue = tableEl.start = 21;
+        var perPage = tableEl.perPage = 20;
+
+        tableEl.addEventListener('start-changed', function (startChangeEvent) {
+
+          expect(startChangeEvent.detail).to.equal(currentStartValue - perPage);
+
+          startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
+          done();
+
+        });
+
+        tableEl.$.previousPage.click();
+
+      });
+
+      it('start value should not go lower than 0', function (done) {
+        var currentStartValue = tableEl.start = 20;
+        var perPage = tableEl.perPage = 50;
+
+        tableEl.addEventListener('start-changed', function (startChangeEvent) {
+
+          expect(startChangeEvent.detail).to.equal(0);
+
+          startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
+          done();
+
+        });
+
+        tableEl.$.previousPage.click();
+
+      });
+
+      it('should disable the next page button if there are no more next records', function (done) {
+
+        tableEl.total = 100;
+        tableEl.start = 90;
+        tableEl.perPage = 10;
+
+        expect(tableEl.$.nextPage.className).to.match(/disabled/);
+        expect(tableEl.$.previousPage.className).to.not.match(/disabled/);
+        done();
+
+      });
+
+      it('should disable the previous page button if there are no more previous records', function (done) {
+        tableEl.total = 100;
+        tableEl.start = 0;
+        tableEl.perPage = 10;
+
+        expect(tableEl.$.previousPage.className).to.match(/disabled/);
+        expect(tableEl.$.nextPage.className).to.not.match(/disabled/);
+        done();
+      });
+
+      it('should disable the previous page button and next page button if there are no more records on each side', function (done) {
+        tableEl.total = 100;
+        tableEl.start = 0;
+        tableEl.perPage = 500;
+
+        expect(tableEl.$.previousPage.className).to.match(/disabled/);
+        expect(tableEl.$.nextPage.className).to.match(/disabled/);
+        done();
+      });
+
+      it('should not perform any logic when the next page button is disabled', function (done) {
+
+        tableEl.total = 100;
+        tableEl.start = 0;
+        tableEl.perPage = 20;
+
+        // Given the previous values , next page should be allowed to perform an action, but for simplicity, we disable
+        // any action when the disabled class is present on the nextPage button
+
+        tableEl.$.nextPage.classList.add('disabled');
+        tableEl.$.nextPage.click();
+
+        setTimeout(function(){
+          expect(tableEl.start).to.equal(0);
+          done();
+        }, 1);
+
+      });
+
+      it('should not perform any logic when the previous page button is disabled', function (done) {
+
+        tableEl.total = 100;
+        tableEl.start = 50;
+        tableEl.perPage = 20;
+
+        // Given the previous values , next page should be allowed to perform an action, but for simplicity, we disable
+        // any action when the disabled class is present on the nextPage button
+
+        tableEl.$.previousPage.classList.add('disabled');
+        tableEl.$.previousPage.click();
+
+        setTimeout(function(){
+          expect(tableEl.start).to.equal(50);
+          done();
+        }, 1);
+
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>

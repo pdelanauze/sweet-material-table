@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('visible columns functionality', function () {
+      beforeEach(function (done) {
+        tableEl.schema = {
+          title: 'Products',
+          properties: {
+            sku: {
+              type: 'string',
+              title: 'SKU'
+            },
+            content: {
+              type: 'string',
+              title: 'Title'
+            },
+            price: {
+              type: 'number',
+              title: 'Price'
+            }
+          }
+        };
+
+        tableEl.data = [
+          {
+            sku: 'SK-123',
+            title: 'SK product',
+            price: 12.22,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-124',
+            title: 'SK product 2',
+            price: 0.99,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-125',
+            title: 'SK product 3',
+            price: 19.99,
+            salePrice: 9.00
+          }
+        ];
+
+        // TODO : FIX ME : Throws an exception that i cannot understand
+        // tableEl.splice('columns', 0, tableEl.columns.length);
+
+        tableEl.perPage = 100;
+        tableEl.sortColumn = null;
+        tableEl.sortDirection = null;
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should render columns based off the columns array provided', function (done) {
+
+        tableEl.splice('columns', 0, tableEl.columns.length);
+        tableEl.push('columns', {
+          title: 'Created at',
+          key: 'createdAt'
+        });
+
+        setTimeout(function(){
+          var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
+          expect(tableHeaders.length).to.equal(2);
+          expect(tableHeaders[1].innerHTML).to.match(/Created at/);
+
+          tableEl.splice('columns', tableEl.columns.length - 1, 1);
+
+          done();
+        }, 1);
+
+      });
+
+      it('should generate a set of visible columns based off of the schema when none are provided', function (done) {
+        var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
+        expect(tableHeaders.length).to.equal(4); // Always +1 because of the checkbox icon column
+
+        done();
+      });
+
+      it('should update its displayed columns when the columns array has changed', function (done) {
+
+        tableEl.push('columns', {
+          key: 'salePrice',
+          title: 'Sale price'
+        });
+
+        setTimeout(function(){
+          var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
+          expect(tableHeaders.length).to.equal(5);
+          expect(tableHeaders[4].innerHTML).to.match(/Sale price/);
+
+          var tableCells = tableEl.$.table.querySelectorAll('.tbody .tr:first-child .td');
+          expect(tableCells.length).to.equal(5);
+          expect(tableCells[4].innerHTML).to.match(new RegExp(tableEl.data[0].salePrice));
+
+          done();
+        }, 1);
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>

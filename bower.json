@@ -1,0 +1,34 @@
+{
+  "name": "sweet-material-table",
+  "version": "0.0.1",
+  "authors": [
+    "Patrick de Lanauze <patrick.delanauze@gmail.com>"
+  ],
+  "description": "Polymer material data tables implementation",
+  "keywords": [
+    "Polymer",
+    "web-components"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/pdelanauze/sweet-material-table",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "~1.0.6",
+    "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
+    "paper-material": "PolymerElements/paper-material#^1.0.0",
+    "paper-menu": "PolymerElements/paper-menu#^1.0.0",
+    "paper-item": "PolymerElements/paper-item#^1.0.0",
+    "icon-icons": "PolymerElements/iron-icons#^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^1.0.0",
+    "web-component-tester": "Polymer/web-component-tester#~3.3.0"
+  }
+}

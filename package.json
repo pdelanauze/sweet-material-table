@@ -1,0 +1,25 @@
+{
+  "name": "sweet-material-table",
+  "version": "0.0.1",
+  "description": "Polymer material data tables implementation",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pdelanauze/sweet-material-table"
+  },
+  "keywords": [
+    "polymer"
+  ],
+  "author": "Patrick de Lanauze <patrick.delanauze@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pdelanauze/sweet-material-table/issues"
+  },
+  "homepage": "https://github.com/pdelanauze/sweet-material-table",
+  "devDependencies": {
+    "bower": "^1.4.1"
+  }
+}

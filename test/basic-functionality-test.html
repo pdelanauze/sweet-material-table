@@ -1,0 +1,86 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('basic functionality', function () {
+      before(function (done) {
+        tableEl.schema = {
+          title: 'Blog posts',
+          properties: {
+            title: {
+              type: 'string',
+              title: 'Title'
+            },
+            content: {
+              type: 'string',
+              title: 'Content'
+            },
+            createdAt: {
+              type: 'date',
+              title: 'Created at'
+            }
+          }
+        };
+
+        tableEl.data = [
+          {
+            title: 'First blog post',
+            content: 'This is the content of the first blog post , bla bla tech bla dev bla polymer bla bla...',
+            createdAt: new Date()
+          },
+          {
+            title: 'Second blog post',
+            content: 'This is the content of the second blog post , bla bla tech bla dev bla more polymer bla bla...',
+            createdAt: new Date()
+          }
+        ];
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should have the same number of rows as the data array', function () {
+        var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
+        expect(rows.length).to.equal(tableEl.data.length);
+      });
+
+      it('should have title, content, and createdAt columns', function(){
+        var columns = tableEl.$.table.querySelectorAll('.thead .th');
+        expect(columns[columns.length - 1].innerHTML).to.match(/Created\sat/);
+        expect(columns[columns.length - 2].innerHTML).to.match(/Content/);
+        expect(columns[columns.length - 3].innerHTML).to.match(/Title/);
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>
