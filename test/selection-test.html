@@ -125,20 +125,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       it('should mark the select all button as checked when all items are selected', function (done) {
-        // This works , just test it please
-        expect(true).to.be.false;
+
+        tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        var selectAllCheckbox = tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox');
+        var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
+
+        expect(selectAllCheckbox.checked).to.be.false;
+
+        for (var i = 0, ii = tableEl.data.length; i < ii; i++) {
+          rows[i].querySelector('.td:first-child paper-checkbox').click();
+        }
+
+        expect(selectAllCheckbox.checked).to.be.true;
         done();
+
       });
 
       it('should uncheck the select all button when an item is removed from the selection', function (done) {
-        // This works , just test it please
-        expect(true).to.be.false;
-        done();
-      });
 
-      it('should should be able to dispatch a bulk operation', function (done) {
-        expect(false).to.be.true;
+
+        tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        var selectAllCheckbox = tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox');
+        var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
+
+        expect(selectAllCheckbox.checked).to.be.false;
+
+        for (var i = 0, ii = tableEl.data.length; i < ii; i++) {
+          rows[i].querySelector('.td:first-child paper-checkbox').click();
+        }
+
+        expect(selectAllCheckbox.checked).to.be.true;
+
+        rows[0].querySelector('.td:first-child paper-checkbox').click();
+
+        expect(selectAllCheckbox.checked).to.be.false;
+
         done();
+
       });
 
     });
