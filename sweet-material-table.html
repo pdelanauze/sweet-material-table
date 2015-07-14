@@ -553,7 +553,7 @@
           rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
         }
 
-        this.$.selectAll.checked = this.selectedIndexes.length === this.data.length;
+        this.$.selectAll.checked = (this.selectedIndexes && this.data && this.selectedIndexes.length === this.data.length);
       },
 
       detached: function () {
