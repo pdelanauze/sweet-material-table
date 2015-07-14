@@ -526,8 +526,8 @@
         if (this.selectedIndexes.length === this.data.length) {
           this.splice('selectedIndexes', 0, this.data.length);
         } else {
+          this.splice('selectedIndexes', 0, this.selectedIndexes.length - 1);
           for (var i = 0, ii = this.data.length; i < ii; i++) {
-            this.splice('selectedIndexes', 0, this.selectedIndexes.length - 1);
             this.push('selectedIndexes', i);
           }
         }
