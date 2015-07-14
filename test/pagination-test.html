@@ -79,15 +79,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       it('should fire an event when the perPage selection changes', function (done) {
 
-        tableEl.addEventListener('perPage-changed', function (newPerPageEvent) {
+        tableEl.addEventListener('per-page-changed', function (newPerPageEvent) {
 
-          expect(newPerPageEvent.detail).to.equal(50);
+          expect(newPerPageEvent.detail.value).to.equal(100);
 
           newPerPageEvent.target.removeEventListener(newPerPageEvent.type, arguments.callee);
           done();
         });
 
-        tableEl.$.perPageMenu.querySelector('paper-item[value="50"]').click();
+        tableEl.$.perPageMenu.querySelector('paper-item[value="100"]').click();
 
       });
 
@@ -110,7 +110,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         tableEl.addEventListener('start-changed', function (startChangeEvent) {
 
-          expect(startChangeEvent.detail).to.equal(currentStartValue + perPage);
+          expect(startChangeEvent.detail.value).to.equal(currentStartValue + perPage);
 
           startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
           done();
@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         tableEl.addEventListener('start-changed', function (startChangeEvent) {
 
-          expect(startChangeEvent.detail).to.equal(currentStartValue - perPage);
+          expect(startChangeEvent.detail.value).to.equal(currentStartValue - perPage);
 
           startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
           done();
@@ -144,7 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         tableEl.addEventListener('start-changed', function (startChangeEvent) {
 
-          expect(startChangeEvent.detail).to.equal(0);
+          expect(startChangeEvent.detail.value).to.equal(0);
 
           startChangeEvent.target.removeEventListener(startChangeEvent.type, arguments.callee);
           done();

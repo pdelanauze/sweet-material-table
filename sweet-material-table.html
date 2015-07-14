@@ -307,13 +307,6 @@
 
   <script>
     /**
-     * Events thrown by this module:
-     * - perPage-changed, with the `event.detail` property having the new perPage value
-     * - start-changed, with the `event.detail` property having the new start value
-     * - sort-changed, with an object having the column name and direction in event.detail , as such: `{column: 'name', direction: 'ascending'}` (or 'descending', or null, in case natural order has been requested)
-     *
-     * Events are manually fired in case you want to use this component from pure javascript, but the perPage, start,
-     * sortColumn and sortDirection do have notify: true set on them.
      *
      * Limitations:
      *
@@ -348,14 +341,17 @@
         },
         perPage: {
           type: Number,
-          notify: true
+          notify: true,
+          default: 50
         },
         start: {
           type: Number,
-          notify: true
+          notify: true,
+          default: 0
         },
         total: {
-          type: Number
+          type: Number,
+          default: 0
         },
         sortColumn: {
           type: String,
@@ -377,9 +373,6 @@
         '_sortDirectionChanged(sortColumn,sortDirection)'
       ],
       ready: function () {
-        this.perPage = 0;
-        this.start = 0;
-        this.total = 0;
         this.columns = [];
         this.availableColumns = [];
         this.selectedIndexes = [];
@@ -442,21 +435,20 @@
           return;
         }
         this.start = this.start + this.perPage;
-        this.fire('start-changed', this.start);
       },
       _previousPageClicked: function (e) {
         if (e.currentTarget.className.match(/disabled/)) {
           return;
         }
-        this.start = this.start - this.perPage;
-        if (this.start < 0) {
+        var newStart = this.start - this.perPage;
+        if (newStart < 0) {
           this.start = 0;
+        } else {
+          this.start = newStart;
         }
-        this.fire('start-changed', this.start);
       },
       _perPageSelectionChanged: function (event) {
         this.perPage = parseInt(event.target.attributes.value.value);
-        this.fire('perPage-changed', this.perPage);
         return this._dropDownPerPageMenuClicked(); // Gotta toggle off this paper-menu
       },
 
@@ -499,11 +491,6 @@
           this.sortColumn = column;
           this.sortDirection = 'descending';
         }
-
-        this.fire('sort-changed', {
-          column: this.sortColumn,
-          direction: this.sortDirection
-        });
       },
       _sortDirectionChanged: function (sortColumn, sortDirection) {
         // Clear the classes on the ths

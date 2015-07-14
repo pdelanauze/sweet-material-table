@@ -78,19 +78,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var th = tableEl.$.table.querySelectorAll('.thead .th')[1];
 
-        tableEl.addEventListener('sort-changed', function (e) {
+        tableEl.addEventListener('sort-column-changed', function (e) {
 
           e.target.removeEventListener(e.type, arguments.callee);
 
           var detail = e.detail;
-          expect(detail.direction).to.equal('descending');
-          expect(detail.column).to.equal('sku');
+          expect(detail.value).to.equal('sku');
 
-          expect(th.className).to.match(/sorted-descending/);
-          expect(tableEl.sortColumn).to.equal('sku');
-          expect(tableEl.sortDirection).to.equal('descending');
+          setTimeout(function(){
+            expect(th.className).to.match(/sorted-descending/);
+            expect(tableEl.sortColumn).to.equal('sku');
+            expect(tableEl.sortDirection).to.equal('descending');
 
-          done();
+            done();
+          }, 1);
         });
 
         th.click();
