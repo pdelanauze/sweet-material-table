@@ -143,7 +143,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       it('should uncheck the select all button when an item is removed from the selection', function (done) {
 
-
         tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
         var selectAllCheckbox = tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox');
         var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
@@ -162,6 +161,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         done();
 
+      });
+
+      it('should be able to check and then select all without problems', function(done){
+
+        tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+
+        var rows = tableEl.$.table.querySelectorAll('.tbody .tr');
+        rows[0].querySelector('.td:first-child paper-checkbox').click();
+
+        tableEl.$.table.querySelector('.thead .tr .th:first-child paper-checkbox').click();
+
+        expect(tableEl.selectedIndexes.length).to.equal(tableEl.data.length);
+        done();
       });
 
     });
