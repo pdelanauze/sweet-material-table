@@ -29,3 +29,7 @@ To run
 To reach the demo page
 
 `python -m SimpleHTTPServer && open http://localhost:8000/bower_components/sweet-material-table/demo/index.html`
+
+### gh-pages update
+
+`git fetch && git branch -D gh-pages && git rm .gitignore && git checkout -b gh-pages && ./node_modules/.bin/bower install 'git://github.com/pdelanauze/sweet-material-table#master' && git add bower_components && git commit -m "Regenerating gh-pages" && git push origin gh-pages -f`
