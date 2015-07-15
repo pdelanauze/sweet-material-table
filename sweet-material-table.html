@@ -100,6 +100,24 @@
       display: block;
     }
 
+    #tableHeader .alternate-action, #tableHeader .alternate-title {
+      display: none;
+    }
+
+    #tableHeader.alternate-header {
+      background: rgba(63, 81, 181, .30);
+    }
+
+    #tableHeader.alternate-header .alternate-action,
+    #tableHeader.alternate-header .alternate-title {
+      display: inline-block;
+    }
+
+    #tableHeader.alternate-header .primary-action,
+    #tableHeader.alternate-header .primary-title {
+      display: none;
+    }
+
     #tableFooter {
       font-size: 12px;
       color: rgba(0, 0, 0, .54);
@@ -214,7 +232,8 @@
     <paper-material>
 
       <div id="tableHeader" class="horizontal layout">
-        <div class="label flex">{{schema.title}}</div>
+        <div class="label flex primary-title">[[schema.title]]</div>
+        <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
         <div class="actions">
 
           <paper-material class="absolute">
@@ -231,8 +250,16 @@
             </paper-menu>
           </paper-material>
 
-          <iron-icon icon="icons:filter-list" on-click="_filterListClicked"></iron-icon>
-          <iron-icon icon="icons:more-vert" on-click="_moreClicked"></iron-icon>
+          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"></iron-icon>
+          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_moreClicked"></iron-icon>
+          <template is="dom-repeat" items="[[actions]]" as="action">
+
+            <iron-icon class="alternate-action"
+                       icon="[[action.icon]]"
+                       action="[[action.name]]"
+                       on-click="_actionClicked"></iron-icon>
+
+          </template>
         </div>
       </div>
       <div id="table">
@@ -319,10 +346,6 @@
      * - th paper-tooltips
      * - A proper paper-dropdown solution
      *
-     *
-     * Lower priority:
-     * - Alternate headers ( action icons based on selections )
-     * - Bulk operations
      */
     Polymer({
       is: 'sweet-material-table',
@@ -366,6 +389,9 @@
         selectedIndexes: {
           type: Array,
           notify: true
+        },
+        actions: {
+          type: Array
         }
       },
       observers: [
@@ -539,13 +565,27 @@
           rows[i].querySelector('.td:first-child paper-checkbox').checked = false;
           rows[i].classList.remove('selected');
         }
-        for (var i = 0, ii = this.selectedIndexes.length; i < ii; i++) {
+        var selectedIndexesLength = this.selectedIndexes.length;
+        for (var i = 0, ii = selectedIndexesLength; i < ii; i++) {
           rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
           rows[i].classList.add('selected');
         }
 
-        this.$.selectAll.checked = (this.selectedIndexes && this.data && this.selectedIndexes.length === this.data.length);
+        this.$.selectAll.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
+
+        if (selectedIndexesLength) {
+          this.$.tableHeader.classList.add('alternate-header');
+          this.alternateHeaderTitle = selectedIndexesLength + ' row' + (selectedIndexesLength === 1 ? '' : 's') + ' selected';
+        } else {
+          this.$.tableHeader.classList.remove('alternate-header');
+        }
+      },
+
+      _actionClicked: function (e) {
+        var actionName = e.currentTarget.action;
+        this.fire('action', actionName);
       }
+
     })
   </script>
 </dom-module>

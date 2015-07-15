@@ -1,0 +1,161 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('action functionality', function () {
+      beforeEach(function (done) {
+        tableEl.schema = {
+          title: 'Products',
+          properties: {
+            sku: {
+              type: 'string',
+              title: 'SKU'
+            },
+            content: {
+              type: 'string',
+              title: 'Title'
+            },
+            price: {
+              type: 'number',
+              title: 'Price'
+            }
+          }
+        };
+
+        tableEl.data = [
+          {
+            sku: 'SK-123',
+            title: 'SK product',
+            price: 12.22,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-124',
+            title: 'SK product 2',
+            price: 0.99,
+            salePrice: 9.00
+          },
+          {
+            sku: 'SK-125',
+            title: 'SK product 3',
+            price: 19.99,
+            salePrice: 9.00
+          }
+        ];
+
+        tableEl.perPage = 100;
+        tableEl.sortColumn = null;
+        tableEl.sortDirection = null;
+
+        tableEl.actions = [
+          {
+            name: 'delete',
+            icon: 'icons:delete',
+            title: 'Delete all'
+          },
+          {
+            name: 'push-to-cloud',
+            icon: 'icons:cloud',
+            title: 'Push it into the cloud'
+            /* Cloud to butt extension is awesome :) */
+          }
+        ];
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should display the alternate header when an item is selected', function (done) {
+        if (tableEl.selectedIndexes.length) {
+          tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        }
+
+        expect(tableEl.$.tableHeader.className).to.not.match(/alternate-header/);
+
+        tableEl.push('selectedIndexes', 0);
+
+        expect(tableEl.$.tableHeader.className).to.match(/alternate-header/);
+        done();
+      });
+
+      it('should display available actions in the top menu when a single row is selected', function (done) {
+
+        if (tableEl.selectedIndexes.length) {
+          tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        }
+
+        tableEl.push('selectedIndexes', 0);
+
+        var alternateActions = tableEl.querySelectorAll('#tableHeader.alternate-header .alternate-action');
+        expect(alternateActions.length).to.equal(tableEl.actions.length);
+        for (var i = 0, ii = alternateActions.length; i < ii; i++) {
+          expect(alternateActions[i].offsetParent).to.not.be.null;
+        }
+
+        done();
+      });
+
+      it('should not display available actions in the top menu when no rows are selected', function (done) {
+        if (tableEl.selectedIndexes.length) {
+          tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        }
+
+        setTimeout(function () {
+          var alternateActions = tableEl.querySelectorAll('#tableHeader .alternate-action');
+          for (var i = 0, ii = alternateActions.length; i < ii; i++) {
+            expect(alternateActions[i].offsetParent).to.be.null;
+          }
+
+          done();
+        }, 1); // Gotta let the reflow / repaint / redraw kick in
+      });
+
+      it('should fire an event with the related selected indexes when an action button is clicked', function (done) {
+        if (tableEl.selectedIndexes.length) {
+          tableEl.splice('selectedIndexes', 0, tableEl.selectedIndexes.length);
+        }
+
+        tableEl.push('selectedIndexes', 0);
+
+        tableEl.addEventListener('action', function (e) {
+          e.target.removeEventListener(e.type, arguments.callee);
+          expect(e.detail === tableEl.actions[0].name);
+          done();
+        });
+
+        tableEl.querySelector('#tableHeader .alternate-action').click();
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>
