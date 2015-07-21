@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "~1.0.6",
+    "polymer": "#1.0.6",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "paper-menu": "PolymerElements/paper-menu#^1.0.0",
