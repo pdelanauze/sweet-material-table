@@ -1,0 +1,105 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <!-- Step 1: import the element to test -->
+  <link rel="import" href="../sweet-material-table.html">
+</head>
+<body>
+
+<!-- You can use the document as a place to set up your fixtures. -->
+<sweet-material-table></sweet-material-table>
+
+<script>
+  var tableEl = document.querySelector('sweet-material-table');
+
+  describe('<sweet-material-table>', function () {
+
+    describe('schema binding functionality', function () {
+      beforeEach(function (done) {
+
+        tableEl.data = [
+          {
+            sku: 'SK-123',
+            title: 'SK product',
+            price: 12.22
+          },
+          {
+            sku: 'SK-124',
+            title: 'SK product 2',
+            price: 0.99
+          },
+          {
+            sku: 'SK-125',
+            title: 'SK product 3',
+            price: 19.99
+          }
+        ];
+
+        setTimeout(done, 1); // Needs a tick for the table to actually render
+      });
+
+      it('should generate availableColumns when a new schema is assigned', function (done) {
+
+        expect(tableEl.availableColumns.length).to.equal(0);
+
+        tableEl.set('schema', {
+          title: 'Products',
+          properties: {
+            sku: {
+              type: 'string',
+              title: 'SKU'
+            },
+            content: {
+              type: 'string',
+              title: 'Title'
+            },
+            price: {
+              type: 'number',
+              title: 'Price'
+            }
+          }
+        });
+
+        expect(tableEl.availableColumns.length).to.equal(3);
+        done();
+      });
+
+      it('should not reset availableColumns when no schema is assigned', function (done) {
+
+        tableEl.set('availableColumns', [
+          {
+            key: 'c', title: 'Column'
+          },
+          {
+            key: 'cs', title: 'Counter strike'
+          }
+        ]);
+
+        tableEl.set('schema', null);
+
+        expect(tableEl.availableColumns.length).to.equal(2);
+        done();
+      });
+
+    });
+
+  });
+</script>
+
+</body>
+</html>
