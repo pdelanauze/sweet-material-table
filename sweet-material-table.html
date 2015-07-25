@@ -232,7 +232,7 @@
     <paper-material>
 
       <div id="tableHeader" class="horizontal layout">
-        <div class="label flex primary-title">[[schema.title]]</div>
+        <div id="title" class="label flex primary-title">[[title]]</div>
         <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
         <div class="actions">
 
@@ -350,6 +350,7 @@
     Polymer({
       is: 'sweet-material-table',
       properties: {
+        title: String,
         schema: {
           type: Object
         },
@@ -406,9 +407,14 @@
         this.selectedIndexes = [];
       },
       _schemaChanged: function () {
-        if (!this.columns.length) {
 
-          var schema = this.schema;
+        var schema = this.schema;
+
+        if (schema && schema.title && !this.title) {
+          this.set('title', schema.title);
+        }
+
+        if (!this.columns.length) {
 
           for (var key in schema.properties) {
             this.push('columns', {
@@ -436,6 +442,17 @@
           this.$.nextPage.classList.remove('disabled');
         }
 
+      },
+
+      _getTitle: function (title, schemaTitle) {
+        debugger;
+        if (title) {
+          return title;
+        }
+        if (schemaTitle) {
+          return schemaTitle;
+        }
+        return '';
       },
       _getEndValue: function (start, perPage) {
         return start + perPage;
