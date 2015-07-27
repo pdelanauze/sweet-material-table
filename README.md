@@ -4,15 +4,36 @@ A material design table implementation. Based on http://www.google.com/design/sp
 
 ### Demo
 
-TODO Add link to demo
-
-## Simple Example:
+[Demos!](http://pdelanauze.github.io/sweet-material-table/bower_components/sweet-material-table/demo/)
 
 ```
-<sweet-material-table>
-
-</sweet-material-table>
+<sweet-material-table
+        id="table"
+        title="Normal demo"
+        columns="[[columns]]"
+        available-columns="[[availableColumns]]"
+        data="[[data]]"
+        start="{{start}}"
+        per-page="{{perPage}}"
+        total="{{total}}" />
 ```
+
+Look inside the `demo` folder for code examples.
+
+## Important notes
+
+### Data manipulation
+
+When manipulating data of this element , make sure to use Polymer's methods and not native Array / Object types.. For 
+example, do 
+`tableElement.push('availableColumns', {key: 'c', title: 'Column'});` 
+and NOT 
+`tableElement.availableColumns.push({key: 'c', title: 'Column'})`
+
+### Schema changes
+
+A change to the schema will force the regeneration of *availableColumns* (columns will stay as is), so if you have your 
+own set of columns assigned make sure you reset them after changing the schema.
 
 ## Development
 
