@@ -187,24 +187,35 @@
       overflow: visible;
     }
 
-    #table .thead .tr .th.sorted-ascending,
-    #table .thead .tr .th.sorted-descending {
+    #table .thead .tr iron-icon.sorted-ascending,
+    #table .thead .tr iron-icon.sorted-descending {
       color: rgba(0, 0, 0, .87);
+      position: absolute;
+      left: -18px;
+      width: 16px;
+      height: 16px;
+    }
+
+    #table .thead .tr iron-icon.sorted-ascending {
+      margin-top: -2px;
+    }
+
+    #table .thead .tr iron-icon.sorted-descending {
+      margin-top: 3px;
+    }
+
+    #table .thead .tr .th:not(.sorted-ascending):not(.sorted-descending) iron-icon {
+      display: none;
     }
 
     #table .thead .tr .th:not(.sorted-ascending) .sorted-ascending,
     #table .thead .tr .th:not(.sorted-descending) .sorted-descending {
-      display: none;
+      opacity: 0.4;
     }
 
     #table .thead .tr .th.sorted-ascending .sorted-ascending,
     #table .thead .tr .th.sorted-descending .sorted-descending {
-      display: block;
-      position: absolute;
-      left: -18px;
 
-      width: 20px;
-      height: 20px;
     }
 
     #table .tbody .tr {
@@ -360,10 +371,16 @@
         },
         columns: {
           type: Array,
-          notify: true
+          notify: true,
+          value: function () {
+            return [];
+          }
         },
         availableColumns: {
-          type: Array
+          type: Array,
+          value: function () {
+            return [];
+          }
         },
         perPage: {
           type: Number,
@@ -389,7 +406,10 @@
         },
         selectedIndexes: {
           type: Array,
-          notify: true
+          notify: true,
+          value: function () {
+            return [];
+          }
         },
         actions: {
           type: Array
@@ -402,9 +422,7 @@
         '_sortDirectionChanged(sortColumn,sortDirection)'
       ],
       ready: function () {
-        this.columns = [];
-        this.availableColumns = [];
-        this.selectedIndexes = [];
+
       },
       _schemaChanged: function () {
 
@@ -414,14 +432,17 @@
           this.set('title', schema.title);
         }
 
-        if (!this.columns.length) {
-
+        if (!this.columns.length && schema) {
           for (var key in schema.properties) {
             this.push('columns', {
               title: schema.properties[key].title,
               key: key
             });
+          }
+        }
 
+        if (!this.availableColumns.length && schema) {
+          for (var key in schema.properties) {
             this.push('availableColumns', {
               title: schema.properties[key].title,
               key: key
