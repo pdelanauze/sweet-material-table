@@ -314,29 +314,29 @@
       <div id="tableFooter" class="end-justified" style="text-align: right;">
         <span id="perPageLabel">Rows per page:</span>
         <span id="perPageValue">[[perPage]]</span>
-      <span id="perPageSelector">
-        <iron-icon icon="icons:expand-more" on-click="_dropDownPerPageMenuClicked"></iron-icon>
-        <paper-material>
-          <paper-menu id="perPageMenu" style="display: none;">
-            <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
-            <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
-            <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
-          </paper-menu>
-        </paper-material>
-      </span>
-      <span id="paginationStatus" class="flex">
-        <span>[[start]]</span>
-        <span>-</span>
-        <span>[[_getEndValue(start,perPage)]]</span>
-        <span> of </span>
-        <span>[[total]]</span>
-      </span>
-      <span id="previousPage" class="flex" on-click="_previousPageClicked">
-        <iron-icon icon="icons:chevron-left"></iron-icon>
-      </span>
-      <span id="nextPage" class="flex" on-click="_nextPageClicked">
-        <iron-icon icon="icons:chevron-right"></iron-icon>
-      </span>
+        <span id="perPageSelector">
+          <iron-icon icon="icons:expand-more" on-click="_dropDownPerPageMenuClicked"></iron-icon>
+          <paper-material>
+            <paper-menu id="perPageMenu" style="display: none;">
+              <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
+              <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
+              <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
+            </paper-menu>
+          </paper-material>
+        </span>
+        <span id="paginationStatus" class="flex">
+          <span>[[start]]</span>
+          <span>-</span>
+          <span>[[_getEndValue(start,perPage)]]</span>
+          <span> of </span>
+          <span>[[total]]</span>
+        </span>
+        <span id="previousPage" class="flex" on-click="_previousPageClicked">
+          <iron-icon icon="icons:chevron-left"></iron-icon>
+        </span>
+        <span id="nextPage" class="flex" on-click="_nextPageClicked">
+          <iron-icon icon="icons:chevron-right"></iron-icon>
+        </span>
       </div>
 
     </paper-material>
