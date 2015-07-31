@@ -119,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           expect(tableHeaders.length).to.equal(5);
           expect(tableHeaders[4].innerHTML).to.match(/Sale price/);
 
-          var tableCells = tableEl.$.table.querySelectorAll('.tbody .tr:first-child .td');
+          var tableCells = tableEl.$.table.querySelectorAll('.tbody .tr')[0].querySelectorAll('.td');
           expect(tableCells.length).to.equal(5);
           expect(tableCells[4].innerHTML).to.match(new RegExp(tableEl.data[0].salePrice));
 

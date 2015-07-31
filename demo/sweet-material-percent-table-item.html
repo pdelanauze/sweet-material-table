@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer.html"/>
+
+<!-- Represents a single item row within a sweet-material-table element -->
+<dom-module id="sweet-material-percent-table-item">
+  <style>
+    #value {
+      text-align: right;
+    }
+  </style>
+  <template>
+    <div class="td flex" id="value">{{value}}<span>%</span></div>
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-percent-table-item',
+      properties: {
+        row: {
+          type: Object,
+          notify: true
+        },
+        field: {
+          type: Object
+        },
+        value: {
+          type: String,
+          observer: '_valueChanged'
+        }
+      },
+      observers: [
+        '_dataChanged(row.*, field)'
+      ],
+      ready: function () {
+
+        var ctx = this;
+        var observer = this.mutationObserver = new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+
+            // Content editable like support
+            if (mutation.target) {
+              ctx.value = mutation.target.data;
+            } else {
+              console.log('Could not find target node, cannot update data')
+            }
+          });
+        });
+
+        observer.observe(this.$.value, {
+          childList: true,
+          characterData: true,
+          subtree: true
+        });
+      },
+      _dataChanged: function (rowData, field) {
+        if (rowData && field) {
+          var value = rowData.base[field.key];
+          if (this.value !== value) {
+            this.value = value;
+          }
+        }
+      },
+      _valueChanged: function (value) {
+        if (this.row && this.field && this.row[this.field] !== value) {
+          this.set('row.' + this.field.key, value);
+        }
+      },
+      detached: function () {
+        this.mutationObserver.disconnect();
+      }
+    });
+  </script>
+</dom-module>

@@ -1,27 +1,71 @@
 <link rel="import" href="../../polymer/polymer.html"/>
 
-<dom-module id="sweet-material-table-schema-demo">
+<dom-module id="sweet-material-table-custom-table-cells-demo">
 
-  <link rel="import" href="../sweet-material-table.html" />
+  <link rel="import" href="../sweet-material-table.html"/>
+  <link rel="import" href="../sweet-material-table-item.html"/>
+  <link rel="import" href="sweet-material-numeric-table-item.html"/>
+  <link rel="import" href="sweet-material-percent-table-item.html"/>
+  <link rel="import" type="css" href="../sweet-material-table.css"/>
 
   <style>
-
+    sweet-material-table::shadow #table .th:not([data-column="dessert"]) {
+      text-align: right;
+    }
   </style>
   <template>
     <sweet-material-table
         id="table"
-        title="Schema demo"
+        title="Custom templates demo"
         schema="[[schema]]"
         data="[[data]]"
         start="{{start}}"
+        columns="{{columns}}"
         per-page="{{perPage}}"
-        total="{{total}}">
+        total="{{total}}"
+        custom-tbody-content="true">
+
+      <div class="tbody">
+
+        <template is="dom-repeat" items="{{data}}" as="instance">
+
+          <div class="tr horizontal layout" index="[[index]]">
+            <div class="td checkbox">
+              <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
+            </div>
+
+            <template is="dom-repeat" items="{{columns}}" as="column">
+
+              <template is="dom-if" if="[[_isNumericColumn(column)]]">
+                <sweet-material-numeric-table-item class="flex td-host"
+                                                   field="[[column]]"
+                                                   data-column$="[[column.key]]"
+                                                   row="{{instance}}"></sweet-material-numeric-table-item>
+              </template>
+              <template is="dom-if" if="[[_isPercentColumn(column)]]">
+                <sweet-material-percent-table-item class="flex td-host"
+                                                   field="[[column]]"
+                                                   data-column$="[[column.key]]"
+                                                   row="{{instance}}"></sweet-material-percent-table-item>
+              </template>
+              <template is="dom-if" if="[[_isStringColumn(column)]]">
+                <sweet-material-table-item class="flex td-host"
+                                           field="[[column]]"
+                                           data-column$="[[column.key]]"
+                                           row="{{instance}}"></sweet-material-table-item>
+              </template>
+
+
+            </template>
+          </div>
+        </template>
+      </div>
 
     </sweet-material-table>
   </template>
   <script>
     Polymer({
-      is: 'sweet-material-table-schema-demo',
+      is: 'sweet-material-table-custom-table-cells-demo',
       ready: function () {
         this.schema = {
           title: 'Nutrition',
@@ -60,6 +104,11 @@
             }
           }
         };
+
+        this.superData = [
+          {key: 'test'},
+          {key: 'test2'}
+        ];
 
         this.data = [
           {
@@ -167,6 +216,27 @@
         this.perPage = 10;
         this.start = 0;
         this.total = 100;
+      },
+      _selectRow: function () {
+        return this.$.table._selectRow.apply(this.$.table, arguments);
+      },
+      _isNumericColumn: function (column) {
+        return [
+              'calories',
+              'fat',
+              'carbs',
+              'protein',
+              'sodium'
+            ].indexOf(column.key) !== -1;
+      },
+      _isPercentColumn: function (column) {
+        return [
+              'calcium',
+              'iron'
+            ].indexOf(column.key) !== -1;
+      },
+      _isStringColumn: function (column) {
+        return !this._isNumericColumn(column) && !this._isPercentColumn(column);
       }
     });
   </script>
