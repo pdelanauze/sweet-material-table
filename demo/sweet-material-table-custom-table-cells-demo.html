@@ -23,7 +23,8 @@
         columns="{{columns}}"
         per-page="{{perPage}}"
         total="{{total}}"
-        custom-tbody-content="true">
+        custom-tbody-content="true"
+        global-actions="[[globalActions]]">
 
       <div class="tbody">
 
@@ -216,6 +217,18 @@
         this.perPage = 10;
         this.start = 0;
         this.total = 100;
+        this.globalActions = [
+          {
+            name: 'new',
+            icon: 'icons:new',
+            title: 'New record'
+          },
+          {
+            name: 'push-to-cloud',
+            iron: 'icons:cloud',
+            title: 'Push into your cloud' /* Cloud to butt extension is magical */
+          }
+        ];
       },
       _selectRow: function () {
         return this.$.table._selectRow.apply(this.$.table, arguments);

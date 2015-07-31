@@ -16,7 +16,8 @@
         start="{{start}}"
         per-page="{{perPage}}"
         total="{{total}}"
-        actions="[[actions]]">
+        actions="[[actions]]"
+        global-actions="[[globalActions]]">
 
     </sweet-material-table>
   </template>
@@ -72,6 +73,19 @@
             /* Cloud to butt extension is awesome :) */
           }
         ];
+
+        this.globalActions = [
+          {
+            name: 'new',
+            icon: 'icons:new',
+            title: 'New record'
+          },
+          {
+            name: 'push-to-cloud',
+            iron: 'icons:cloud',
+            title: 'Push all into the cloud'
+          }
+        ]
       }
     });
   </script>

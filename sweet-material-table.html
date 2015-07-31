@@ -41,6 +41,19 @@
             </paper-menu>
           </paper-material>
 
+          <paper-material class="absolute">
+            <paper-menu id="globalActionsMenu" style="display: none;">
+              <template is="dom-repeat" items="[[globalActions]]" as="action">
+
+                <paper-item action="[[action.name]]"
+                            on-click="_globalActionClicked">
+                  <span>[[action.title]]</span>
+                </paper-item>
+
+              </template>
+            </paper-menu>
+          </paper-material>
+
           <template is="dom-repeat" items="[[actions]]" as="action">
 
             <iron-icon class="alternate-action"
@@ -50,8 +63,11 @@
 
           </template>
 
-          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"></iron-icon>
-          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_moreClicked"></iron-icon>
+          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"
+                     visible$="[[availableColumns.length]]"></iron-icon>
+          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_globalActionsClicked"
+                     visible$="[[globalActions.length]]"></iron-icon>
+
         </div>
       </div>
       <div id="table">
@@ -202,7 +218,16 @@
           }
         },
         actions: {
-          type: Array
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        globalActions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
         },
         customTbodyContent: {
           type: Boolean,
@@ -284,6 +309,14 @@
       },
       _filterListClicked: function () {
         var el = this.$.filterListMenu;
+        if (el.style.display !== 'block') {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      },
+      _globalActionsClicked: function () {
+        var el = this.$.globalActionsMenu;
         if (el.style.display !== 'block') {
           el.style.display = 'block';
         } else {
@@ -414,6 +447,10 @@
         }
       },
 
+      _globalActionClicked: function (e) {
+        this.$.globalActionsMenu.style.display = 'none';
+        return this._actionClicked(e);
+      },
       _actionClicked: function (e) {
         var actionName = e.currentTarget.action;
         this.fire('action', actionName);

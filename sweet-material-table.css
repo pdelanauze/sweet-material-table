@@ -76,12 +76,20 @@ paper-menu {
   padding-right: 10px;
 }
 
-#tableHeader .actions iron-icon:last-child {
+#tableHeader .actions iron-icon[visible="0"] {
+  display: none;
+}
+
+#tableHeader .actions iron-icon[visible]:last-child {
   padding-right: 0;
 }
 
-#tableHeader #filterListMenu {
+#tableHeader #filterListMenu, #tableHeader #globalActionsMenu {
   min-width: 240px;
+}
+
+#tableHeader #globalActionsMenu paper-item {
+  cursor: pointer;
 }
 
 #tableHeader #filterListMenu paper-checkbox {
