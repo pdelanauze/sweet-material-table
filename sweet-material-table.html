@@ -22,8 +22,20 @@
     #table .tbody .tr .td,
     #table .tbody .tr sweet-material-table-item::shadow .td,
     #tableHeader, #tableFooter {
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 18px;
+      padding-bottom: 11px; /* -1px because of the border */
+    }
+
+    #table .thead .tr .th{
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+
+
+    #tableHeader {
+      font-size: 19px;
+      padding-top: 18px;
+      padding-bottom: 24px;
     }
 
     #table .thead .tr .th,
@@ -69,12 +81,6 @@
       padding-right: 24px;
     }
 
-    #tableHeader {
-      font-size: 18px;
-      padding-top: 16px;
-      padding-bottom: 16px;
-    }
-
     #tableHeader paper-material.absolute {
       position: absolute;
       z-index: 2;
@@ -83,7 +89,7 @@
 
     #tableHeader .actions iron-icon {
       cursor: pointer;
-      padding-right: 24px;
+      padding-right: 10px;
     }
 
     #tableHeader .actions iron-icon:last-child {
@@ -135,8 +141,11 @@
       cursor: pointer;
     }
 
+    #tableFooter > *:last-child {
+      padding-right: 0;
+    }
+
     #tableFooter #nextPage {
-      padding-right: 14px;
       width: 24px;
     }
 
@@ -234,6 +243,7 @@
     #table .tbody .tr sweet-material-table-item::shadow .td {
       font-size: 13px;
       color: rgba(0, 0, 0, .87);
+      line-height: 13px;
     }
 
   </style>
@@ -261,8 +271,6 @@
             </paper-menu>
           </paper-material>
 
-          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"></iron-icon>
-          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_moreClicked"></iron-icon>
           <template is="dom-repeat" items="[[actions]]" as="action">
 
             <iron-icon class="alternate-action"
@@ -271,6 +279,9 @@
                        on-click="_actionClicked"></iron-icon>
 
           </template>
+
+          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"></iron-icon>
+          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_moreClicked"></iron-icon>
         </div>
       </div>
       <div id="table">
@@ -315,7 +326,7 @@
         <span id="perPageLabel">Rows per page:</span>
         <span id="perPageValue">[[perPage]]</span>
         <span id="perPageSelector">
-          <iron-icon icon="icons:expand-more" on-click="_dropDownPerPageMenuClicked"></iron-icon>
+          <iron-icon icon="icons:arrow-drop-down" on-click="_dropDownPerPageMenuClicked"></iron-icon>
           <paper-material>
             <paper-menu id="perPageMenu" style="display: none;">
               <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
