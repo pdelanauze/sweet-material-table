@@ -24,7 +24,9 @@
     "paper-material": "PolymerElements/paper-material#^1.0.0",
     "paper-menu": "PolymerElements/paper-menu#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
-    "icon-icons": "PolymerElements/iron-icons#^1.0.0"
+    "icon-icons": "PolymerElements/iron-icons#^1.0.0",
+    "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.0",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.3"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
