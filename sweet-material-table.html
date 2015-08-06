@@ -435,9 +435,6 @@
           this.splice('selectedIndexes', indexOf, 1);
         }
       },
-      _isRowSelected: function (index) {
-        return this.selectedIndexes.indexOf(index) !== -1;
-      },
       _selectedIndexesChanged: function () {
         var rows = this.$.table.querySelectorAll('.tbody .tr');
         for (var i = 0, ii = rows.length; i < ii; i++) {
@@ -447,7 +444,7 @@
         var selectedIndexesLength = this.selectedIndexes.length;
         for (var i = 0, ii = selectedIndexesLength; i < ii; i++) {
           rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
-          rows[i].classList.add('selected');
+          rows[this.selectedIndexes[i]].classList.add('selected');
         }
 
         this.$.selectAll.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
