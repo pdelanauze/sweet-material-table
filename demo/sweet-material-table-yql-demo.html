@@ -1,0 +1,130 @@
+<link rel="import" href="../../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-yql-demo">
+
+  <link rel="import" href="../sweet-material-table.html" />
+  <link rel="import" href="../../byutv-jsonp/byutv-jsonp.html"/>
+
+  <template>
+    <sweet-material-table
+        id="table"
+        title="YQL demo"
+        data="[[response.query.results.Result]]"
+        columns="[[columns]]"
+        available-columns="[[availableColumns]]"
+        start="{{start}}"
+        per-page="{{perPage}}"
+        sort-column="{{sortColumn}}"
+        sort-direction="{{sortDirection}}"
+        total="{{response.query.count}}"
+        actions="[[actions]]"
+        global-actions="[[globalActions]]">
+
+    </sweet-material-table>
+
+    <byutv-jsonp id="ajax"
+                 url="https://query.yahooapis.com/v1/public/yql"
+                 params="[[params]]"
+                 handle-as="json"
+                 content-type="application/json"
+                 on-response="_handleResponse"></byutv-jsonp>
+
+
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-table-yql-demo',
+      properties: {
+        query: {
+          type: String,
+          value: ''
+        },
+        params: {
+          type: Object,
+          value: function () {
+            return {
+              q: 'select Title, Rating.AverageRating from local.search(20) where query="pizza" and city="New York" and state="NY" | sort(field="Rating.AverageRating") | reverse()',
+              format: "json",
+              env: "store://datatables.org/alltableswithkeys"
+            };
+          }
+        },
+        columns: {
+          type: Array,
+          value: function () {
+            return [
+              {key: 'Title', title: 'Title'},
+              {key: 'Rating.AverageRating', title: 'Average rating'}
+            ]
+          }
+        },
+        availableColumns: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        perPage: {
+          type: Number,
+          value: 50
+        },
+        start: {
+          type: Number,
+          value: 0
+        },
+        total: {
+          type: Number,
+          value: 150
+        },
+        globalActions: {
+          type: Array,
+          value: function () {
+            return [
+              {
+                name: 'refresh',
+                icon: 'icons:new',
+                title: 'Refresh'
+              }
+            ];
+          }
+        }
+      },
+      observers: [
+        '_updateQuery(sortColumn,sortDirection,start,perPage)'
+      ],
+      _getParams: function (query) {
+        return this.params;
+      },
+      _updateQuery: function () {
+
+        var query = 'select Title, Rating.AverageRating from local.search(' + this.start + ',' + this.perPage + ') ' +
+            'where query="pizza" and city="New York" and state="NY"';
+
+        if (this.sortColumn) {
+
+          query = query + ' | sort(field="' + this.sortColumn + '")';
+
+          if (this.sortDirection === 'descending') {
+            query = query + ' | reverse()';
+          }
+        }
+
+        this.set('params.q', query);
+        this.$.ajax.generateRequest();
+      },
+      ready: function () {
+        this._updateQuery();
+        this.$.table.addEventListener('action', this._onAction.bind(this));
+      },
+
+      _handleResponse: function (event, response) {
+        this.set('response', response);
+      },
+      _onAction: function (event) {
+        if (event.details === 'refresh') {
+          this.$.ajax.generateRequest();
+        }
+      }
+    });
+  </script>
+</dom-module>
