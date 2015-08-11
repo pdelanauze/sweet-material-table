@@ -18,6 +18,7 @@
         sort-direction="{{sortDirection}}"
         total="{{response.query.count}}"
         actions="[[actions]]"
+        loading="[[loading]]"
         global-actions="[[globalActions]]">
 
     </sweet-material-table>
@@ -26,6 +27,7 @@
                  url="https://query.yahooapis.com/v1/public/yql"
                  params="[[params]]"
                  handle-as="json"
+                 loading="{{loading}}"
                  content-type="application/json"
                  on-response="_handleResponse"></byutv-jsonp>
 

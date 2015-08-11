@@ -9,6 +9,7 @@
   <link rel="import" href="../paper-menu/paper-menu.html"/>
   <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
   <link rel="import" href="../paper-menu-button/paper-menu-button.html"/>
+  <link rel="import" href="../paper-spinner/paper-spinner.html" />
 
   <link rel="import" href="./sweet-material-table-item.html"/>
   <link rel="import" type="css" href="sweet-material-table.css"/>
@@ -98,6 +99,10 @@
           </div>
         </div>
         <div class="tbody" id="tbody">
+
+          <div id="loadingIndicator" active$="[[loading]]">
+            <paper-spinner id="spinner" active$="[[loading]]"></paper-spinner>
+          </div>
 
           <template is="dom-if" if="[[customTbodyContent]]">
             <content select=".tbody"></content>
@@ -221,6 +226,11 @@
         sortDirection: {
           type: String,
           notify: true
+        },
+        loading: {
+          type: Boolean,
+          notify: true,
+          value: false
         },
         selectedIndexes: {
           type: Array,
