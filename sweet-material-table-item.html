@@ -26,7 +26,7 @@
       ],
       _dataChanged: function (rowData, field) {
         if (rowData && field) {
-          var value = rowData.base[field.key];
+          var value = this.get('row.' + field.key);
           if (this.value !== value) {
             this.value = value;
           }
