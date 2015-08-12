@@ -249,13 +249,12 @@ paper-material {
   height: 100%;
   margin: auto;
 
-  background: rgba(0, 0, 0, .05);
   z-index: 2;
 }
 
 #table .tbody #loadingIndicator #spinner {
-  left: 48%;
-  top: 5px;
+  display: block;
+  width: 100%;
 }
 
 #table .tbody #loadingIndicator[active] {

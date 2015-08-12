@@ -9,7 +9,7 @@
   <link rel="import" href="../paper-menu/paper-menu.html"/>
   <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
   <link rel="import" href="../paper-menu-button/paper-menu-button.html"/>
-  <link rel="import" href="../paper-spinner/paper-spinner.html" />
+  <link rel="import" href="../paper-progress/paper-progress.html"/>
 
   <link rel="import" href="./sweet-material-table-item.html"/>
   <link rel="import" type="css" href="sweet-material-table.css"/>
@@ -101,7 +101,7 @@
         <div class="tbody" id="tbody">
 
           <div id="loadingIndicator" active$="[[loading]]">
-            <paper-spinner id="spinner" active$="[[loading]]"></paper-spinner>
+            <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
           </div>
 
           <template is="dom-if" if="[[customTbodyContent]]">
