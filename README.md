@@ -20,10 +20,6 @@ A material design table implementation. Based on http://www.google.com/design/sp
 
 Look inside the `demo` folder for code examples. (Be warned, this is still a work in progress)
 
-## TODO
-
-- paper-spinner styles are horrible .. fixme please
-
 ## Development
 
 To get started , first `npm install && ./node_modules/.bin/bower install`
