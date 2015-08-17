@@ -60,6 +60,11 @@ paper-material {
   padding-right: 24px;
 }
 
+#table .thead .tr .th:not(.checkbox):first-of-type,
+#table .tbody .tr .td:not(.checkbox):first-of-type {
+  padding-left: 68px;
+}
+
 #tableHeader .actions paper-menu-button {
   padding: 0 10px 0 0;
 }

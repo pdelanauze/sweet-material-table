@@ -8,7 +8,7 @@
 
   </style>
   <template>
-
+    <paper-checkbox checked="{{showSelect}}">Show checkboxes</paper-checkbox>
     <sweet-material-table
         id="table"
         title="Normal demo"
@@ -17,6 +17,7 @@
         data="[[data]]"
         start="{{start}}"
         per-page="{{perPage}}"
+        show-select="[[showSelect]]"
         total="{{total}}">
 
     </sweet-material-table>
