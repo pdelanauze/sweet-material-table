@@ -5,8 +5,11 @@
   <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
   <link rel="import" href="../paper-material/paper-material.html"/>
   <link rel="import" href="../iron-icons/iron-icons.html"/>
-  <link rel="import" href="../paper-menu/paper-menu.html"/>
   <link rel="import" href="../paper-item/paper-item.html"/>
+  <link rel="import" href="../paper-menu/paper-menu.html"/>
+  <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
+  <link rel="import" href="../paper-menu-button/paper-menu-button.html"/>
+  <link rel="import" href="../paper-progress/paper-progress.html"/>
 
   <link rel="import" href="./sweet-material-table-item.html"/>
   <link rel="import" type="css" href="sweet-material-table.css"/>
@@ -27,8 +30,22 @@
         <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
         <div class="actions">
 
-          <paper-material class="absolute">
-            <paper-menu id="filterListMenu" style="display: none;">
+          <template is="dom-repeat" items="[[actions]]" as="action">
+
+            <iron-icon class="alternate-action"
+                       icon="[[action.icon]]"
+                       action="[[action.name]]"
+                       on-click="_actionClicked"></iron-icon>
+
+          </template>
+
+          <paper-menu-button
+              id="filterListMenu"
+              visible$="[[availableColumns.length]]"
+              horizontal-align="right"
+              open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+            <paper-icon-button icon="icons:filter-list" class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content">
               <template is="dom-repeat" items="[[availableColumns]]" as="column">
 
                 <paper-checkbox checked$="{{_isColumnVisible(column)}}"
@@ -39,34 +56,25 @@
 
               </template>
             </paper-menu>
-          </paper-material>
+          </paper-menu-button>
 
-          <paper-material class="absolute">
-            <paper-menu id="globalActionsMenu" style="display: none;">
+          <paper-menu-button
+              id="globalActionsMenu"
+              visible$="[[globalActions.length]]"
+              horizontal-align="right"
+              open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+            <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
+            <paper-menu class="dropdown-content">
               <template is="dom-repeat" items="[[globalActions]]" as="action">
 
                 <paper-item action="[[action.name]]"
-                            on-click="_globalActionClicked">
+                            on-click="_actionClicked">
                   <span>[[action.title]]</span>
                 </paper-item>
 
               </template>
             </paper-menu>
-          </paper-material>
-
-          <template is="dom-repeat" items="[[actions]]" as="action">
-
-            <iron-icon class="alternate-action"
-                       icon="[[action.icon]]"
-                       action="[[action.name]]"
-                       on-click="_actionClicked"></iron-icon>
-
-          </template>
-
-          <iron-icon class="primary-action" icon="icons:filter-list" on-click="_filterListClicked"
-                     visible$="[[availableColumns.length]]"></iron-icon>
-          <iron-icon class="primary-action" icon="icons:more-vert" on-click="_globalActionsClicked"
-                     visible$="[[globalActions.length]]"></iron-icon>
+          </paper-menu-button>
 
         </div>
       </div>
@@ -92,6 +100,10 @@
         </div>
         <div class="tbody" id="tbody">
 
+          <div id="loadingIndicator" active$="[[loading]]">
+            <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
+          </div>
+
           <template is="dom-if" if="[[customTbodyContent]]">
             <content select=".tbody"></content>
           </template>
@@ -105,10 +117,13 @@
                 </div>
 
                 <template is="dom-repeat" items="{{columns}}" as="column">
-                  <sweet-material-table-item class="flex td-host"
+
+                  <div class="flex td">
+                    <sweet-material-table-item class="flex"
                                              field="[[column]]"
                                              data-column$="[[column.key]]"
                                              row="{{instance}}"></sweet-material-table-item>
+                  </div>
                 </template>
               </div>
             </template>
@@ -120,16 +135,18 @@
       <div id="tableFooter" class="end-justified" style="text-align: right;">
         <span id="perPageLabel">Rows per page:</span>
         <span id="perPageValue">[[perPage]]</span>
-        <span id="perPageSelector">
-          <iron-icon icon="icons:arrow-drop-down" on-click="_dropDownPerPageMenuClicked"></iron-icon>
-          <paper-material>
-            <paper-menu id="perPageMenu" style="display: none;">
-              <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
-              <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
-              <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
-            </paper-menu>
-          </paper-material>
-        </span>
+        <paper-menu-button
+            id="perPageSelector"
+            vertical-align="bottom"
+            horizontal-align="right"
+            open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+          <paper-icon-button icon="icons:arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content">
+            <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
+            <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
+            <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
+          </paper-menu>
+        </paper-menu-button>
         <span id="paginationStatus" class="flex">
           <span>[[start]]</span>
           <span>-</span>
@@ -210,6 +227,11 @@
           type: String,
           notify: true
         },
+        loading: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
         selectedIndexes: {
           type: Array,
           notify: true,
@@ -232,6 +254,33 @@
         customTbodyContent: {
           type: Boolean,
           value: false
+        },
+
+        _paperMenuButtonOpenAnimationConfig: {
+          type: Object,
+          value: function () {
+            return {
+              name: 'fade-in-animation',
+              timing: {
+                delay: 0,
+                duration: 200
+              }
+            }, {
+              name: 'paper-menu-grow-width-animation',
+              timing: {
+                delay: 100,
+                duration: 150,
+                easing: Polymer.PaperMenuButton.ANIMATION_CUBIC_BEZIER
+              }
+            }, {
+              name: 'paper-menu-grow-height-animation',
+              timing: {
+                delay: 100,
+                duration: 275,
+                easing: Polymer.PaperMenuButton.ANIMATION_CUBIC_BEZIER
+              }
+            };
+          }
         }
       },
       observers: [
@@ -299,31 +348,6 @@
         return start + perPage;
       },
 
-      _dropDownPerPageMenuClicked: function () {
-        var el = this.$.perPageMenu;
-        if (el.style.display !== 'block') {
-          el.style.display = 'block';
-        } else {
-          el.style.display = 'none';
-        }
-      },
-      _filterListClicked: function () {
-        var el = this.$.filterListMenu;
-        if (el.style.display !== 'block') {
-          el.style.display = 'block';
-        } else {
-          el.style.display = 'none';
-        }
-      },
-      _globalActionsClicked: function () {
-        var el = this.$.globalActionsMenu;
-        if (el.style.display !== 'block') {
-          el.style.display = 'block';
-        } else {
-          el.style.display = 'none';
-        }
-      },
-
       _nextPageClicked: function (e) {
         if (e.currentTarget.className.match(/disabled/)) {
           return;
@@ -343,7 +367,6 @@
       },
       _perPageSelectionChanged: function (event) {
         this.perPage = parseInt(event.target.attributes.value.value);
-        return this._dropDownPerPageMenuClicked(); // Gotta toggle off this paper-menu
       },
 
       _isColumnVisible: function (column) {
@@ -422,9 +445,6 @@
           this.splice('selectedIndexes', indexOf, 1);
         }
       },
-      _isRowSelected: function (index) {
-        return this.selectedIndexes.indexOf(index) !== -1;
-      },
       _selectedIndexesChanged: function () {
         var rows = this.$.table.querySelectorAll('.tbody .tr');
         for (var i = 0, ii = rows.length; i < ii; i++) {
@@ -434,7 +454,7 @@
         var selectedIndexesLength = this.selectedIndexes.length;
         for (var i = 0, ii = selectedIndexesLength; i < ii; i++) {
           rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
-          rows[i].classList.add('selected');
+          rows[this.selectedIndexes[i]].classList.add('selected');
         }
 
         this.$.selectAll.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
@@ -447,10 +467,6 @@
         }
       },
 
-      _globalActionClicked: function (e) {
-        this.$.globalActionsMenu.style.display = 'none';
-        return this._actionClicked(e);
-      },
       _actionClicked: function (e) {
         var actionName = e.currentTarget.action;
         this.fire('action', actionName);

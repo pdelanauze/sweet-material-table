@@ -22,28 +22,24 @@ paper-material {
 }
 
 #table .thead .tr .th,
-#table .tbody .tr .td,
-#table .tbody .tr .td-host::shadow .td {
+#table .tbody .tr .td {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
 #table .thead .tr .th,
-#table .tbody .tr .td,
-#table .tbody .tr .td-host::shadow .td {
+#table .tbody .tr .td {
   padding-right: 56px;
 }
 
-#table .thead .tr .th:first-child,
-#table .tbody .tr .td:first-child,
-#table .tbody .tr .td-host:first-child::shadow .td {
+#table .thead .tr .th:first-of-type,
+#table .tbody .tr .td:first-of-type {
   padding-left: 24px;
 }
 
-#table .thead .tr .th:last-child,
-#table .tbody .tr .td:last-child,
-#table .tbody .tr .td-host:last-child::shadow .td {
+#table .thead .tr .th:last-of-type,
+#table .tbody .tr .td:last-of-type {
   padding-right: 24px;
 }
 
@@ -59,46 +55,36 @@ paper-material {
 
 #table .thead .tr .th.checkbox,
 #table .tbody .tr .td.checkbox,
-#table .thead .tr .th:not(.checkbox):first-child,
-#table .tbody .tr .td-host:first-child::shadow .td {
+#table .thead .tr .th:not(.checkbox):first-of-type,
+#table .tbody .tr .td:not(.checkbox):first-of-type {
   padding-right: 24px;
 }
 
-#tableHeader paper-material.absolute {
-  position: absolute;
-  z-index: 2;
-  top: 48px;
+#tableHeader .actions paper-menu-button {
+  padding: 0 10px 0 0;
 }
 
-paper-menu {
-  position: relative;
-  z-index: 2;
+#tableHeader .actions paper-menu-button paper-icon-button {
+  padding: 0;
 }
 
-#tableHeader .actions iron-icon {
-  cursor: pointer;
-  padding-right: 10px;
-}
-
-#tableHeader .actions iron-icon[visible="0"] {
+#tableHeader .actions paper-menu-button[visible="0"] {
   display: none;
 }
 
-#tableHeader .actions iron-icon[visible]:last-child {
+#tableHeader .actions paper-menu-button[visible]:last-of-type {
   padding-right: 0;
 }
 
-#tableHeader #filterListMenu, #tableHeader #globalActionsMenu {
-  min-width: 240px;
-}
-
-#tableHeader #globalActionsMenu paper-item {
+#tableHeader paper-menu-button paper-item, #tableHeader paper-menu-button paper-checkbox {
   cursor: pointer;
 }
 
 #tableHeader #filterListMenu paper-checkbox {
   padding: 0 16px;
   font-size: 16px;
+  height: 48px;
+  line-height: 48px;
   display: block;
 }
 
@@ -159,22 +145,22 @@ paper-menu {
   padding-right: 32px;
 }
 
-#tableFooter #perPageSelector {
-  padding-right: 32px;
+#tableFooter paper-menu-button {
+  padding: 0 32px 0 0;
   width: 24px;
-
-  position: relative;
 }
 
-#tableFooter #perPageSelector paper-material {
-  position: absolute;
-  top: 24px;
-  left: 0;
-  width: 140px;
+#tableFooter paper-menu-button paper-icon-button {
+  padding: 0;
+}
+
+#tableFooter paper-menu-button paper-item {
+  cursor: pointer;
 }
 
 #tableFooter #perPageValue {
   width: 40px;
+  display: inline-block;
 }
 
 #tableFooter #perPageLabel {
@@ -245,4 +231,32 @@ paper-menu {
   font-size: 13px;
   color: rgba(0, 0, 0, .87);
   line-height: 13px;
+}
+
+#table .tbody {
+  position: relative;
+}
+
+#table .tbody #loadingIndicator {
+  display: none;
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+
+  z-index: 2;
+}
+
+#table .tbody #loadingIndicator #spinner {
+  display: block;
+  width: 100%;
+}
+
+#table .tbody #loadingIndicator[active] {
+  display: block;
 }

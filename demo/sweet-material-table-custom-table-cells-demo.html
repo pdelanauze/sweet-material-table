@@ -37,24 +37,28 @@
 
             <template is="dom-repeat" items="{{columns}}" as="column">
 
-              <template is="dom-if" if="[[_isNumericColumn(column)]]">
-                <sweet-material-numeric-table-item class="flex td-host"
-                                                   field="[[column]]"
-                                                   data-column$="[[column.key]]"
-                                                   row="{{instance}}"></sweet-material-numeric-table-item>
-              </template>
-              <template is="dom-if" if="[[_isPercentColumn(column)]]">
-                <sweet-material-percent-table-item class="flex td-host"
-                                                   field="[[column]]"
-                                                   data-column$="[[column.key]]"
-                                                   row="{{instance}}"></sweet-material-percent-table-item>
-              </template>
-              <template is="dom-if" if="[[_isStringColumn(column)]]">
-                <sweet-material-table-item class="flex td-host"
-                                           field="[[column]]"
-                                           data-column$="[[column.key]]"
-                                           row="{{instance}}"></sweet-material-table-item>
-              </template>
+              <div class="flex td">
+
+                <template is="dom-if" if="[[_isNumericColumn(column)]]">
+                  <sweet-material-numeric-table-item class="flex"
+                                                     field="[[column]]"
+                                                     data-column$="[[column.key]]"
+                                                     row="{{instance}}"></sweet-material-numeric-table-item>
+                </template>
+                <template is="dom-if" if="[[_isPercentColumn(column)]]">
+                  <sweet-material-percent-table-item class="flex"
+                                                     field="[[column]]"
+                                                     data-column$="[[column.key]]"
+                                                     row="{{instance}}"></sweet-material-percent-table-item>
+                </template>
+                <template is="dom-if" if="[[_isStringColumn(column)]]">
+                  <sweet-material-table-item class="flex"
+                                             field="[[column]]"
+                                             data-column$="[[column.key]]"
+                                             row="{{instance}}"></sweet-material-table-item>
+                </template>
+
+              </div>
 
 
             </template>

@@ -3,7 +3,7 @@
 <!-- Represents a single item row within a sweet-material-table element -->
 <dom-module id="sweet-material-table-item">
   <template>
-    <div class="td flex" id="value">{{value}}</div>
+    <div class="flex" id="value">{{value}}</div>
   </template>
   <script>
     Polymer({
@@ -24,30 +24,9 @@
       observers: [
         '_dataChanged(row.*, field)'
       ],
-      ready: function () {
-
-        var ctx = this;
-        var observer = this.mutationObserver = new MutationObserver(function (mutations) {
-          mutations.forEach(function (mutation) {
-
-            // Content editable like support
-            if (mutation.target) {
-              ctx.value = mutation.target.data;
-            } else {
-              console.log('Could not find target node, cannot update data')
-            }
-          });
-        });
-
-        observer.observe(this.$.value, {
-          childList: true,
-          characterData: true,
-          subtree: true
-        });
-      },
       _dataChanged: function (rowData, field) {
         if (rowData && field) {
-          var value = rowData.base[field.key];
+          var value = this.get('row.' + field.key);
           if (this.value !== value) {
             this.value = value;
           }
@@ -57,9 +36,6 @@
         if (this.row && this.field && this.row[this.field] !== value) {
           this.set('row.' + this.field.key, value);
         }
-      },
-      detached: function () {
-        this.mutationObserver.disconnect();
       }
     });
   </script>
