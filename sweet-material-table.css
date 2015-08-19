@@ -226,6 +226,11 @@ paper-material {
   background: #f5f5f5;
 }
 
+#table .tbody .tr .td a {
+  color: #0277BD;
+  text-decoration: none;
+}
+
 #table .tbody .tr .td,
 #table .tbody .tr .td-host::shadow .td {
   font-size: 13px;
