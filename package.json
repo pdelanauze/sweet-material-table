@@ -4,6 +4,7 @@
   "description": "Polymer material data tables implementation",
   "main": "index.js",
   "scripts": {
+    "start": "./node_modules/.bin/polyserve -p 8081",
     "test": "node test/index.js"
   },
   "repository": {
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/pdelanauze/sweet-material-table",
   "devDependencies": {
-    "bower": "^1.4.1"
+    "bower": "^1.4.1",
+    "polyserve": "^0.4.0"
   }
 }

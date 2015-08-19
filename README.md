@@ -24,21 +24,15 @@ Look inside the `demo` folder for code examples. (Be warned, this is still a wor
 
 To get started , first `npm install && ./node_modules/.bin/bower install`
 
-To test out the app locally , create a symlink to this component inside the bower_components folder.
-
-`cd bower_components && ln -s ../ sweet-material-table && cd ..`
-
 To run
 
-`python -m SimpleHTTPServer`
+`npm start`
 
-To reach the demo page
+Links
 
-`open http://localhost:8000/bower_components/sweet-material-table/demo/index.html`
-
-To reach the test suite
-
-`open http://localhost:8000/bower_components/sweet-material-table/test/index.html`
+ - [Index](http://localhost:8081/components/sweet-material-table/)
+ - [Demo](http://localhost:8081/components/sweet-material-table/demo/)
+ - [Test](http://localhost:8081/components/sweet-material-table/test/)
 
 ### gh-pages update
 
