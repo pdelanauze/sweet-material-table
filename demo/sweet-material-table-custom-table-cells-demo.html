@@ -2,6 +2,8 @@
 
 <dom-module id="sweet-material-table-custom-table-cells-demo">
 
+  <link rel="import" href="../iron-icons/iron-icons.html" />
+
   <link rel="import" href="../sweet-material-table.html"/>
   <link rel="import" href="../sweet-material-table-item.html"/>
   <link rel="import" href="sweet-material-numeric-table-item.html"/>
@@ -13,10 +15,22 @@
       text-align: right;
     }
 
+    #table .thead .tr .th {
+      cursor: auto;
+    }
+
     #table .thead .tr .th:not([data-column="dessert"]) {
       font-weight: bold;
       color: #C62828;
     }
+
+    #table .tbody .tr .td:last-child iron-icon {
+      color: #C62828;
+      width: 20px;
+      height: 20px;
+      margin-top: -4px;
+    }
+
   </style>
   <template>
     <sweet-material-table
@@ -42,6 +56,7 @@
               <span>[[column.title]]</span>
             </div>
           </template>
+          <div class="th">Actions</div>
         </div>
       </div>
 
@@ -81,6 +96,9 @@
 
 
             </template>
+            <div class="td">
+              <iron-icon icon="icons:delete"></iron-icon>
+            </div>
           </div>
         </template>
       </div>
