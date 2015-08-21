@@ -79,25 +79,32 @@
         </div>
       </div>
       <div id="table">
-        <div class="thead">
-          <div class="tr horizontal layout">
-            <div class="th checkbox">
-              <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
-            </div>
-            <template is="dom-repeat" items="{{columns}}" as="column">
-              <div class="th flex" data-column$="[[column.key]]" on-click="_sortColumn">
 
-                <iron-icon class="sorted-descending"
-                           icon="icons:arrow-drop-down"></iron-icon>
+        <template is="dom-if" if="[[customTheadContent]]">
+          <content select="[[customTheadContent]]"></content>
+        </template>
 
-                <iron-icon class="sorted-ascending"
-                           icon="icons:arrow-drop-up"></iron-icon>
-
-                <span>[[column.title]]</span>
+        <template is="dom-if" if="[[!customTheadContent]]">
+          <div class="thead">
+            <div class="tr horizontal layout">
+              <div class="th checkbox">
+                <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
               </div>
-            </template>
+              <template is="dom-repeat" items="{{columns}}" as="column">
+                <div class="th flex" data-column$="[[column.key]]" on-click="_sortColumn">
+
+                  <iron-icon class="sorted-descending"
+                             icon="icons:arrow-drop-down"></iron-icon>
+
+                  <iron-icon class="sorted-ascending"
+                             icon="icons:arrow-drop-up"></iron-icon>
+
+                  <span>[[column.title]]</span>
+                </div>
+              </template>
+            </div>
           </div>
-        </div>
+        </template>
 
         <div id="loadingIndicator" active$="[[loading]]">
           <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
@@ -250,6 +257,10 @@
           value: function () {
             return [];
           }
+        },
+        customTheadContent: {
+          type: String,
+          value: false
         },
         customTbodyContent: {
           type: String,
@@ -457,7 +468,10 @@
           rows[this.selectedIndexes[i]].classList.add('selected');
         }
 
-        this.$.selectAll.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
+        var selectAllElement = this.querySelector('#selectAll');
+        if (selectAllElement) {
+          selectAllElement.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
+        }
 
         if (selectedIndexesLength) {
           this.$.tableHeader.classList.add('alternate-header');

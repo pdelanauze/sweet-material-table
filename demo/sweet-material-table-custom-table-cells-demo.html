@@ -12,6 +12,11 @@
     sweet-material-table::shadow #table .th:not([data-column="dessert"]) {
       text-align: right;
     }
+
+    #table .thead .tr .th:not([data-column="dessert"]) {
+      font-weight: bold;
+      color: #C62828;
+    }
   </style>
   <template>
     <sweet-material-table
@@ -23,8 +28,22 @@
         columns="{{columns}}"
         per-page="{{perPage}}"
         total="{{total}}"
+        custom-thead-content=".thead"
         custom-tbody-content=".tbody"
         global-actions="[[globalActions]]">
+
+      <div class="thead">
+        <div class="tr horizontal layout">
+          <div class="th checkbox">
+            <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
+          </div>
+          <template is="dom-repeat" items="{{columns}}" as="column">
+            <div class="th flex" data-column$="[[column.key]]">
+              <span>[[column.title]]</span>
+            </div>
+          </template>
+        </div>
+      </div>
 
       <div class="tbody">
 
