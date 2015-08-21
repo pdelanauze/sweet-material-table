@@ -98,19 +98,19 @@
             </template>
           </div>
         </div>
-        <div class="tbody" id="tbody">
 
-          <div id="loadingIndicator" active$="[[loading]]">
-            <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
-          </div>
+        <div id="loadingIndicator" active$="[[loading]]">
+          <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
+        </div>
 
-          <template is="dom-if" if="[[customTbodyContent]]">
-            <content select=".tbody"></content>
-          </template>
+        <template is="dom-if" if="[[customTbodyContent]]">
+          <content select="[[customTbodyContent]]"></content>
+        </template>
 
-          <template is="dom-if" if="[[!customTbodyContent]]">
+        <template is="dom-if" if="[[!customTbodyContent]]">
+          <div class="tbody">
+
             <template is="dom-repeat" items="{{data}}" as="instance">
-
               <div class="tr horizontal layout" index="[[index]]">
                 <div class="td checkbox">
                   <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
@@ -120,16 +120,16 @@
 
                   <div class="flex td">
                     <sweet-material-table-item class="flex"
-                                             field="[[column]]"
-                                             data-column$="[[column.key]]"
-                                             row="{{instance}}"></sweet-material-table-item>
+                                               field="[[column]]"
+                                               data-column$="[[column.key]]"
+                                               row="{{instance}}"></sweet-material-table-item>
                   </div>
                 </template>
               </div>
             </template>
-          </template>
 
-        </div>
+          </div>
+        </template>
       </div>
 
       <div id="tableFooter" class="end-justified" style="text-align: right;">
@@ -252,7 +252,7 @@
           }
         },
         customTbodyContent: {
-          type: Boolean,
+          type: String,
           value: false
         },
 

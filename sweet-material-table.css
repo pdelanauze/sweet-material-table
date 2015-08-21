@@ -238,11 +238,11 @@ paper-material {
   line-height: 13px;
 }
 
-#table .tbody {
+#table {
   position: relative;
 }
 
-#table .tbody #loadingIndicator {
+#table #loadingIndicator {
   display: none;
 
   position: absolute;
@@ -257,11 +257,11 @@ paper-material {
   z-index: 2;
 }
 
-#table .tbody #loadingIndicator #spinner {
+#table #loadingIndicator #spinner {
   display: block;
   width: 100%;
 }
 
-#table .tbody #loadingIndicator[active] {
+#table #loadingIndicator[active] {
   display: block;
 }
