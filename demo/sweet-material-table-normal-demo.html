@@ -2,6 +2,7 @@
 
 <dom-module id="sweet-material-table-normal-demo">
 
+  <link rel="import" href="../paper-material/paper-material.html" />
   <link rel="import" href="../sweet-material-table.html" />
 
   <style>
@@ -9,17 +10,19 @@
   </style>
   <template>
 
-    <sweet-material-table
-        id="table"
-        title="Normal demo"
-        columns="[[columns]]"
-        available-columns="[[availableColumns]]"
-        data="[[data]]"
-        start="{{start}}"
-        per-page="{{perPage}}"
-        total="{{total}}">
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="Normal demo"
+          columns="[[columns]]"
+          available-columns="[[availableColumns]]"
+          data="[[data]]"
+          start="{{start}}"
+          per-page="{{perPage}}"
+          total="{{total}}">
 
-    </sweet-material-table>
+      </sweet-material-table>
+    </paper-material>
   </template>
   <script>
     Polymer({

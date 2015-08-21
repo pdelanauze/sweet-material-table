@@ -2,13 +2,14 @@
 
 <dom-module id="sweet-material-table-normal-demo">
 
+  <link rel="import" href="../paper-material/paper-material.html" />
   <link rel="import" href="../sweet-material-table.html"/>
 
   <style>
 
   </style>
   <template>
-
+    <paper-material id="paper"></paper-material>
   </template>
   <script>
     Polymer({
@@ -48,7 +49,7 @@
         el.start = 0;
         el.total = 150;
 
-        this.appendChild(el);
+        this.querySelector('#paper').appendChild(el);
 
       }
     });

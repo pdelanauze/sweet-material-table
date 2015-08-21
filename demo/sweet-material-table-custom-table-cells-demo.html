@@ -3,6 +3,7 @@
 <dom-module id="sweet-material-table-custom-table-cells-demo">
 
   <link rel="import" href="../iron-icons/iron-icons.html" />
+  <link rel="import" href="../paper-material/paper-material.html" />
 
   <link rel="import" href="../sweet-material-table.html"/>
   <link rel="import" href="../sweet-material-table-item.html"/>
@@ -33,77 +34,79 @@
 
   </style>
   <template>
-    <sweet-material-table
-        id="table"
-        title="Custom templates demo"
-        schema="[[schema]]"
-        data="[[data]]"
-        start="{{start}}"
-        columns="{{columns}}"
-        per-page="{{perPage}}"
-        total="{{total}}"
-        custom-thead-content=".thead"
-        custom-tbody-content=".tbody"
-        global-actions="[[globalActions]]">
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="Custom templates demo"
+          schema="[[schema]]"
+          data="[[data]]"
+          start="{{start}}"
+          columns="{{columns}}"
+          per-page="{{perPage}}"
+          total="{{total}}"
+          custom-thead-content=".thead"
+          custom-tbody-content=".tbody"
+          global-actions="[[globalActions]]">
 
-      <div class="thead">
-        <div class="tr horizontal layout">
-          <div class="th checkbox">
-            <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
-          </div>
-          <template is="dom-repeat" items="{{columns}}" as="column">
-            <div class="th flex" data-column$="[[column.key]]">
-              <span>[[column.title]]</span>
+        <div class="thead">
+          <div class="tr horizontal layout">
+            <div class="th checkbox">
+              <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
             </div>
-          </template>
-          <div class="th">Actions</div>
-        </div>
-      </div>
-
-      <div class="tbody">
-
-        <template is="dom-repeat" items="{{data}}" as="instance">
-
-          <div class="tr horizontal layout" index="[[index]]">
-            <div class="td checkbox">
-              <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
-            </div>
-
             <template is="dom-repeat" items="{{columns}}" as="column">
+              <div class="th flex" data-column$="[[column.key]]">
+                <span>[[column.title]]</span>
+              </div>
+            </template>
+            <div class="th">Actions</div>
+          </div>
+        </div>
 
-              <div class="flex td">
+        <div class="tbody">
 
-                <template is="dom-if" if="[[_isNumericColumn(column)]]">
-                  <sweet-material-numeric-table-item class="flex"
-                                                     field="[[column]]"
-                                                     data-column$="[[column.key]]"
-                                                     row="{{instance}}"></sweet-material-numeric-table-item>
-                </template>
-                <template is="dom-if" if="[[_isPercentColumn(column)]]">
-                  <sweet-material-percent-table-item class="flex"
-                                                     field="[[column]]"
-                                                     data-column$="[[column.key]]"
-                                                     row="{{instance}}"></sweet-material-percent-table-item>
-                </template>
-                <template is="dom-if" if="[[_isStringColumn(column)]]">
-                  <sweet-material-table-item class="flex"
-                                             field="[[column]]"
-                                             data-column$="[[column.key]]"
-                                             row="{{instance}}"></sweet-material-table-item>
-                </template>
+          <template is="dom-repeat" items="{{data}}" as="instance">
 
+            <div class="tr horizontal layout" index="[[index]]">
+              <div class="td checkbox">
+                <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
               </div>
 
+              <template is="dom-repeat" items="{{columns}}" as="column">
 
-            </template>
-            <div class="td">
-              <iron-icon icon="icons:delete"></iron-icon>
+                <div class="flex td">
+
+                  <template is="dom-if" if="[[_isNumericColumn(column)]]">
+                    <sweet-material-numeric-table-item class="flex"
+                                                       field="[[column]]"
+                                                       data-column$="[[column.key]]"
+                                                       row="{{instance}}"></sweet-material-numeric-table-item>
+                  </template>
+                  <template is="dom-if" if="[[_isPercentColumn(column)]]">
+                    <sweet-material-percent-table-item class="flex"
+                                                       field="[[column]]"
+                                                       data-column$="[[column.key]]"
+                                                       row="{{instance}}"></sweet-material-percent-table-item>
+                  </template>
+                  <template is="dom-if" if="[[_isStringColumn(column)]]">
+                    <sweet-material-table-item class="flex"
+                                               field="[[column]]"
+                                               data-column$="[[column.key]]"
+                                               row="{{instance}}"></sweet-material-table-item>
+                  </template>
+
+                </div>
+
+
+              </template>
+              <div class="td">
+                <iron-icon icon="icons:delete"></iron-icon>
+              </div>
             </div>
-          </div>
-        </template>
-      </div>
+          </template>
+        </div>
 
-    </sweet-material-table>
+      </sweet-material-table>
+    </paper-material>
   </template>
   <script>
     Polymer({

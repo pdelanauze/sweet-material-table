@@ -2,26 +2,29 @@
 
 <dom-module id="sweet-material-table-yql-demo">
 
+  <link rel="import" href="../paper-material/paper-material.html"/>
   <link rel="import" href="../sweet-material-table.html" />
   <link rel="import" href="../../byutv-jsonp/byutv-jsonp.html"/>
 
   <template>
-    <sweet-material-table
-        id="table"
-        title="YQL demo"
-        data="[[response.query.results.Result]]"
-        columns="[[columns]]"
-        available-columns="[[availableColumns]]"
-        start="{{start}}"
-        per-page="{{perPage}}"
-        sort-column="{{sortColumn}}"
-        sort-direction="{{sortDirection}}"
-        total="{{response.query.count}}"
-        actions="[[actions]]"
-        loading="[[loading]]"
-        global-actions="[[globalActions]]">
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="YQL demo"
+          data="[[response.query.results.Result]]"
+          columns="[[columns]]"
+          available-columns="[[availableColumns]]"
+          start="{{start}}"
+          per-page="{{perPage}}"
+          sort-column="{{sortColumn}}"
+          sort-direction="{{sortDirection}}"
+          total="{{response.query.count}}"
+          actions="[[actions]]"
+          loading="[[loading]]"
+          global-actions="[[globalActions]]">
 
-    </sweet-material-table>
+      </sweet-material-table>
+    </paper-material>
 
     <byutv-jsonp id="ajax"
                  url="https://query.yahooapis.com/v1/public/yql"
