@@ -74,7 +74,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.sortColumn = null;
         tableEl.sortDirection = null;
 
-        tableEl.actions = [
+        tableEl.bulkActions = [
           {
             name: 'delete',
             icon: 'icons:delete',
@@ -113,7 +113,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.push('selectedIndexes', 0);
 
         var alternateActions = tableEl.querySelectorAll('#tableHeader.alternate-header .alternate-action');
-        expect(alternateActions.length).to.equal(tableEl.actions.length);
+        expect(alternateActions.length).to.equal(tableEl.bulkActions.length);
         for (var i = 0, ii = alternateActions.length; i < ii; i++) {
           expect(alternateActions[i].offsetParent).to.not.be.null;
         }
@@ -145,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         tableEl.addEventListener('action', function (e) {
           e.target.removeEventListener(e.type, arguments.callee);
-          expect(e.detail === tableEl.actions[0].name);
+          expect(e.detail.name === tableEl.bulkActions[0].name);
           done();
         });
 
