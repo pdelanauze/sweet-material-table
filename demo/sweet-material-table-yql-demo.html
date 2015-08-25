@@ -126,7 +126,7 @@
         this.set('response', response);
       },
       _onAction: function (event) {
-        if (event.details === 'refresh') {
+        if (event.detail.name === 'refresh') {
           this.$.ajax.generateRequest();
         }
       }

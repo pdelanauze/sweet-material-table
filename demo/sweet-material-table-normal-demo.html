@@ -19,7 +19,8 @@
           data="[[data]]"
           start="{{start}}"
           per-page="{{perPage}}"
-          total="{{total}}">
+          total="{{total}}"
+          single-actions="[[singleActions]]">
 
       </sweet-material-table>
     </paper-material>
@@ -51,6 +52,14 @@
             content: 'This is the content of the second blog post , bla bla tech bla dev bla more polymer bla bla...',
             createdAt: new Date(),
             id: 3
+          }
+        ];
+
+        this.singleActions = [
+          {
+            title: 'Delete',
+            name: 'delete',
+            icon: 'icons:delete'
           }
         ];
 

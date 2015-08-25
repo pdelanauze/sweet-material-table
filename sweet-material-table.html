@@ -26,10 +26,11 @@
       <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
       <div class="actions">
 
-        <template is="dom-repeat" items="[[actions]]" as="action">
+        <template is="dom-repeat" items="[[bulkActions]]" as="action">
 
           <iron-icon class="alternate-action"
                      icon="[[action.icon]]"
+                     title="[[action.title]]"
                      action="[[action.name]]"
                      on-click="_actionClicked"></iron-icon>
 
@@ -87,7 +88,7 @@
               <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
             </div>
             <template is="dom-repeat" items="{{columns}}" as="column">
-              <div class="th flex" data-column$="[[column.key]]" on-click="_sortColumn">
+              <div class="flex th" data-column$="[[column.key]]" on-click="_sortColumn">
 
                 <iron-icon class="sorted-descending"
                            icon="icons:arrow-drop-down"></iron-icon>
@@ -97,6 +98,10 @@
 
                 <span>[[column.title]]</span>
               </div>
+            </template>
+
+            <template is="dom-if" if="[[singleActions.length]]">
+              <div class="flex th actions">&nbsp;</div>
             </template>
           </div>
         </div>
@@ -126,6 +131,18 @@
                                              field="[[column]]"
                                              data-column$="[[column.key]]"
                                              row="{{instance}}"></sweet-material-table-item>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[singleActions.length]]">
+                <div class="flex td actions">
+                  <template is="dom-repeat" items="[[singleActions]]" as="action" index-as="actionIndex">
+                    <iron-icon index="[[index]]"
+                               icon="[[action.icon]]"
+                               title="[[action.title]]"
+                               action="[[action.name]]"
+                               on-click="_singleActionClicked"></iron-icon>
+                  </template>
                 </div>
               </template>
             </div>
@@ -170,16 +187,7 @@
   <script>
     /**
      *
-     * Limitations:
-     *
-     * - This module currently only supports one sort direction, so no sorting on multiple columns.
-     *
-     * TODO
-     *
-     * - integrate iron-list
-     * - Custom cell renderers (provide any element tag name you want)
-     * - th paper-tooltips
-     * - A proper paper-dropdown solution
+     * sweet-material-table v0.2.0
      *
      */
     Polymer({
@@ -240,7 +248,13 @@
             return [];
           }
         },
-        actions: {
+        singleActions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        bulkActions: {
           type: Array,
           value: function () {
             return [];
@@ -477,7 +491,17 @@
 
       _actionClicked: function (e) {
         var actionName = e.currentTarget.action;
-        this.fire('action', actionName);
+        this.fire('action', {
+          name: actionName,
+          indexes: this.selectedIndexes
+        });
+      },
+      _singleActionClicked: function (e) {
+        var actionName = e.currentTarget.action;
+        this.fire('singleAction', {
+          name: actionName,
+          index: e.currentTarget.index
+        });
       }
 
     })

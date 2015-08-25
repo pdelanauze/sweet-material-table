@@ -227,6 +227,23 @@
   text-decoration: none;
 }
 
+#table .thead .tr .th.actions, #table .tbody .tr .td.actions {
+  flex: 0;
+  min-width: 60px;
+}
+
+#table .tbody .tr:not(:hover) .td.actions {
+  opacity: 0;
+}
+
+#table .tbody .tr .td.actions iron-icon {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  margin-top: -4px;
+  padding: 0 4px;
+}
+
 #table .tbody .tr .td,
 #table .tbody .tr .td-host::shadow .td {
   font-size: 13px;
