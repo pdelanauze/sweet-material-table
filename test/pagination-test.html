@@ -225,6 +225,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       });
 
+      it('should show the total number of records as the end value if the total is lower than the perPage value', function (done) {
+        tableEl.set('start', 0);
+        tableEl.set('perPage', 20);
+        tableEl.set('total', 2);
+
+        setTimeout(function () {
+          expect(tableEl.$.paginationStatus.innerText).to.match(/0\s*-\s*2\sof\s2/);
+          done();
+        }, 1);
+      });
+
     });
 
   });

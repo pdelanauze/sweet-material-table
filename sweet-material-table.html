@@ -170,7 +170,7 @@
         <span id="paginationStatus" class="flex">
           <span>[[start]]</span>
           <span>-</span>
-          <span>[[_getEndValue(start,perPage)]]</span>
+          <span>[[_getEndValue(start,perPage,total)]]</span>
           <span> of </span>
           <span>[[total]]</span>
         </span>
@@ -364,7 +364,11 @@
         return '';
       },
       _getEndValue: function (start, perPage) {
-        return start + perPage;
+        var end = start + perPage;
+        if (end > this.total) {
+          end = this.total;
+        }
+        return end;
       },
 
       _nextPageClicked: function (e) {
