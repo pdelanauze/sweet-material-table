@@ -1,1 +1,0 @@
-alias update-gh-pages='git fetch && git branch -D gh-pages && git rm .gitignore && git checkout -b gh-pages && ./node_modules/.bin/bower install "git://github.com/pdelanauze/sweet-material-table#master" && git add bower_components && git commit -m "Regenerating gh-pages" && git push origin gh-pages -f'
