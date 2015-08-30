@@ -36,4 +36,4 @@ Links
 
 ### gh-pages update
 
-`source .aliases && update-gh-pages`
+Use the gp.sh script found at https://github.com/Polymer/tools
