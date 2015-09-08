@@ -22,7 +22,16 @@
   <template>
 
     <div id="tableHeader" class="horizontal layout">
-      <div id="title" class="label flex primary-title">[[title]]</div>
+
+      <div class="label flex primary-title">
+        <template is="dom-if" if="[[customTitleContent]]">
+          <content select="[[customTitleContent]]"></content>
+        </template>
+        <template is="dom-if" if="[[!customTitleContent]]">
+          <span id="title">[[title]]</span>
+        </template>
+      </div>
+
       <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
       <div class="actions">
 
@@ -136,13 +145,19 @@
 
               <template is="dom-if" if="[[singleActions.length]]">
                 <div class="flex td actions">
-                  <template is="dom-repeat" items="[[singleActions]]" as="action" index-as="actionIndex">
-                    <iron-icon index="[[index]]"
-                               icon="[[action.icon]]"
-                               title="[[action.title]]"
-                               action="[[action.name]]"
-                               on-click="_singleActionClicked"></iron-icon>
-                  </template>
+
+                  <paper-menu-button>
+                    <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                      <template is="dom-repeat" items="[[singleActions]]" as="action" index-as="actionIndex">
+                        <paper-item index="[[index]]"
+                                    action="[[action.name]]"
+                                    on-click="_singleActionClicked">
+                          <span>[[action.title]]</span>
+                        </paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-menu-button>
                 </div>
               </template>
             </div>
@@ -265,6 +280,10 @@
           value: function () {
             return [];
           }
+        },
+        customTitleContent: {
+          type: String,
+          value: false
         },
         customTheadContent: {
           type: String,

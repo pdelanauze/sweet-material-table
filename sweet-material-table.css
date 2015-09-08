@@ -1,20 +1,39 @@
 #table .thead .tr .th,
 #table .tbody .tr .td,
-#table .tbody .tr .td-host::shadow .td,
 #tableHeader, #tableFooter {
-  padding-top: 18px;
-  padding-bottom: 11px; /* -1px because of the border */
+  padding: 0;
+  height: 47px;
+  max-height: 47px; /* -1px for the border */
 }
 
 #table .thead .tr .th {
-  padding-top: 14px;
-  padding-bottom: 14px;
+  padding: 0;
+  height: 56px;
+  max-height: 56px;
+  line-height: 56px;
+}
+
+#table .tbody .tr .td {
+  height: 48px;
+  max-height: 48px;
+  line-height: 48px;
 }
 
 #tableHeader {
+  padding: 0;
+  height: 64px;
+  max-height: 64px;
+}
+
+#tableFooter {
+  line-height: 48px;
+}
+
+#tableHeader .primary-title #title,
+#tableHeader .alternate-title,
+#tableHeader .actions {
   font-size: 19px;
-  padding-top: 18px;
-  padding-bottom: 24px;
+  line-height: 60px;
 }
 
 #table .thead .tr .th,
@@ -105,10 +124,6 @@
 #tableFooter {
   font-size: 12px;
   color: rgba(0, 0, 0, .54);
-
-  line-height: 24px;
-  height: 24px;
-  max-height: 24px;
   overflow: visible;
 }
 
@@ -185,6 +200,7 @@
   position: absolute;
   left: -18px;
   width: 16px;
+  top: 20px;
   height: 16px;
 }
 
@@ -229,26 +245,26 @@
 
 #table .thead .tr .th.actions, #table .tbody .tr .td.actions {
   flex: 0;
-  min-width: 60px;
+  min-width: 48px;
+  text-align: right;
+}
+
+#table .tbody .tr .td.actions paper-menu-button {
+  padding: 0;
+}
+
+#table .tbody .tr .td.actions paper-icon-button {
+  line-height: 0;
 }
 
 #table .tbody .tr:not(:hover) .td.actions {
-  opacity: 0;
+  /*opacity: 0;*/
+
 }
 
-#table .tbody .tr .td.actions iron-icon {
-  cursor: pointer;
-  height: 20px;
-  width: 20px;
-  margin-top: -4px;
-  padding: 0 4px;
-}
-
-#table .tbody .tr .td,
-#table .tbody .tr .td-host::shadow .td {
+#table .tbody .tr .td {
   font-size: 13px;
   color: rgba(0, 0, 0, .87);
-  line-height: 13px;
 }
 
 #table {
