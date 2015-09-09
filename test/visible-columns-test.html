@@ -31,7 +31,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     describe('visible columns functionality', function () {
       beforeEach(function (done) {
-        tableEl.schema = {
+
+        tableEl.set('columns', []);
+        tableEl.set('schema', {
           title: 'Products',
           properties: {
             sku: {
@@ -47,9 +49,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               title: 'Price'
             }
           }
-        };
+        });
 
-        tableEl.data = [
+        tableEl.set('data', [
           {
             sku: 'SK-123',
             title: 'SK product',
@@ -68,63 +70,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             price: 19.99,
             salePrice: 9.00
           }
-        ];
+        ]);
 
-        // TODO : FIX ME : Throws an exception that i cannot understand
-        // tableEl.splice('columns', 0, tableEl.columns.length);
-
-        tableEl.perPage = 100;
-        tableEl.sortColumn = null;
-        tableEl.sortDirection = null;
+        tableEl.set('perPage', 100);
+        tableEl.set('sortColumn', null);
+        tableEl.set('sortDirection', null);
 
         setTimeout(done, 1); // Needs a tick for the table to actually render
       });
 
       it('should render columns based off the columns array provided', function (done) {
 
-        tableEl.splice('columns', 0, tableEl.columns.length);
-        tableEl.push('columns', {
+        tableEl.set('columns', [{
           title: 'Created at',
           key: 'createdAt'
-        });
+        }]);
 
         setTimeout(function(){
           var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
           expect(tableHeaders.length).to.equal(2);
           expect(tableHeaders[1].innerHTML).to.match(/Created at/);
 
-          tableEl.splice('columns', tableEl.columns.length - 1, 1);
-
           done();
         }, 1);
 
       });
 
-      it('should generate a set of visible columns based off of the schema when none are provided', function (done) {
+      it('should generate a set of visible columns based off of the schema when none are provided', function () {
         var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
         expect(tableHeaders.length).to.equal(4); // Always +1 because of the checkbox icon column
-
-        done();
-      });
-
-      it('should update its displayed columns when the columns array has changed', function (done) {
-
-        tableEl.push('columns', {
-          key: 'salePrice',
-          title: 'Sale price'
-        });
-
-        setTimeout(function(){
-          var tableHeaders = tableEl.$.table.querySelectorAll('.thead .th');
-          expect(tableHeaders.length).to.equal(5);
-          expect(tableHeaders[4].innerHTML).to.match(/Sale price/);
-
-          var tableCells = tableEl.$.table.querySelectorAll('.tbody .tr')[0].querySelectorAll('.td');
-          expect(tableCells.length).to.equal(5);
-          expect(tableCells[4].innerHTML).to.match(new RegExp(tableEl.data[0].salePrice));
-
-          done();
-        }, 1);
       });
 
     });
