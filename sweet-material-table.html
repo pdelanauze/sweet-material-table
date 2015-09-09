@@ -11,15 +11,16 @@
   <link rel="import" href="../paper-progress/paper-progress.html"/>
 
   <link rel="import" href="./sweet-material-table-item.html"/>
-  <link rel="import" type="css" href="sweet-material-table.css"/>
-
-  <style>
-    :host {
-      display: block;
-    }
-  </style>
+  <link rel="import" href="./sweet-material-table-styles.html"/>
 
   <template>
+
+    <style include="sweet-material-table-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
 
     <div id="tableHeader" class="horizontal layout">
 

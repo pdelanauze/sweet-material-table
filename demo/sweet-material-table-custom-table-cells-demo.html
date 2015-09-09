@@ -9,31 +9,33 @@
   <link rel="import" href="../sweet-material-table-item.html"/>
   <link rel="import" href="sweet-material-numeric-table-item.html"/>
   <link rel="import" href="sweet-material-percent-table-item.html"/>
-  <link rel="import" type="css" href="../sweet-material-table.css"/>
+  <link rel="import" href="../sweet-material-table-styles.html"/>
 
-  <style>
-    sweet-material-table::shadow #table .th:not([data-column="dessert"]) {
-      text-align: right;
-    }
-
-    #table .thead .tr .th {
-      cursor: auto;
-    }
-
-    #table .thead .tr .th:not([data-column="dessert"]) {
-      font-weight: bold;
-      color: #C62828;
-    }
-
-    #table .tbody .tr .td:last-child iron-icon {
-      color: #C62828;
-      width: 20px;
-      height: 20px;
-      margin-top: -4px;
-    }
-
-  </style>
   <template>
+
+    <style include="sweet-material-table-styles"></style>
+    <style>
+      sweet-material-table::shadow #table .th:not([data-column="dessert"]) {
+        text-align: right;
+      }
+
+      #table .thead .tr .th {
+        cursor: auto;
+      }
+
+      #table .thead .tr .th:not([data-column="dessert"]) {
+        font-weight: bold;
+        color: #C62828;
+      }
+
+      #table .tbody .tr .td:last-child iron-icon {
+        color: #C62828;
+        width: 20px;
+        height: 20px;
+        margin-top: -4px;
+      }
+
+    </style>
     <paper-material>
       <sweet-material-table
           id="table"

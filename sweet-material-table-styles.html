@@ -1,0 +1,305 @@
+<link rel="import" href="../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-styles">
+
+  <template>
+    <style>
+      #table .thead .tr .th,
+      #table .tbody .tr .td,
+      #tableHeader, #tableFooter {
+        padding: 0;
+        height: 47px;
+        max-height: 47px; /* -1px for the border */
+      }
+
+      #table .thead .tr .th {
+        padding: 0;
+        height: 56px;
+        max-height: 56px;
+        line-height: 56px;
+      }
+
+      #table .tbody .tr .td {
+        height: 48px;
+        max-height: 48px;
+        line-height: 48px;
+      }
+
+      #tableHeader {
+        padding: 0;
+        height: 64px;
+        max-height: 64px;
+      }
+
+      #tableFooter {
+        line-height: 48px;
+      }
+
+      #tableHeader .primary-title #title,
+      #tableHeader .alternate-title,
+      #tableHeader .actions {
+        font-size: 19px;
+        line-height: 60px;
+      }
+
+      #table .thead .tr .th,
+      #table .tbody .tr .td {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      #table .thead .tr .th,
+      #table .tbody .tr .td {
+        padding-right: 56px;
+      }
+
+      #table .thead .tr .th:first-of-type,
+      #table .tbody .tr .td:first-of-type {
+        padding-left: 24px;
+      }
+
+      #table .thead .tr .th:last-of-type,
+      #table .tbody .tr .td:last-of-type {
+        padding-right: 24px;
+      }
+
+      #tableHeader {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      #tableFooter {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      #table .thead .tr .th.checkbox,
+      #table .tbody .tr .td.checkbox,
+      #table .thead .tr .th:not(.checkbox):first-of-type,
+      #table .tbody .tr .td:not(.checkbox):first-of-type {
+        padding-right: 24px;
+      }
+
+      #tableHeader .actions paper-menu-button {
+        padding: 0 10px 0 0;
+      }
+
+      #tableHeader .actions paper-menu-button paper-icon-button {
+        padding: 0;
+      }
+
+      #tableHeader .actions paper-menu-button[visible="0"] {
+        display: none;
+      }
+
+      #tableHeader .actions paper-menu-button[visible]:last-of-type {
+        padding-right: 0;
+      }
+
+      #tableHeader paper-menu-button paper-item, #tableHeader paper-menu-button paper-checkbox {
+        cursor: pointer;
+      }
+
+      #tableHeader #filterListMenu paper-checkbox {
+        padding: 0 16px;
+        font-size: 16px;
+        height: 48px;
+        line-height: 48px;
+        display: block;
+      }
+
+      #tableHeader .alternate-action, #tableHeader .alternate-title {
+        display: none;
+      }
+
+      #tableHeader.alternate-header {
+        background: rgba(63, 81, 181, .30);
+      }
+
+      #tableHeader.alternate-header .alternate-action,
+      #tableHeader.alternate-header .alternate-title {
+        display: inline-block;
+      }
+
+      #tableHeader.alternate-header .primary-action,
+      #tableHeader.alternate-header .primary-title {
+        display: none;
+      }
+
+      #tableFooter {
+        font-size: 12px;
+        color: rgba(0, 0, 0, .54);
+        overflow: visible;
+      }
+
+      #tableFooter #nextPage.disabled,
+      #tableFooter #previousPage.disabled {
+        opacity: 0.4;
+      }
+
+      #tableFooter #nextPage:not(.disabled),
+      #tableFooter #previousPage:not(.disabled),
+      #tableFooter #perPageSelector iron-icon,
+      #tableFooter #perPageMenu paper-item {
+        cursor: pointer;
+      }
+
+      #tableFooter > *:last-child {
+        padding-right: 0;
+      }
+
+      #tableFooter #nextPage {
+        width: 24px;
+      }
+
+      #tableFooter #previousPage {
+        padding-right: 24px;
+        width: 24px;
+      }
+
+      #tableFooter #paginationStatus {
+        padding-right: 32px;
+      }
+
+      #tableFooter paper-menu-button {
+        padding: 0 32px 0 0;
+        width: 24px;
+      }
+
+      #tableFooter paper-menu-button paper-icon-button {
+        padding: 0;
+      }
+
+      #tableFooter paper-menu-button paper-item {
+        cursor: pointer;
+      }
+
+      #tableFooter #perPageValue {
+        width: 40px;
+        display: inline-block;
+      }
+
+      #tableFooter #perPageLabel {
+
+      }
+
+      #table .thead .tr .th {
+        font-size: 12px;
+        color: rgba(0, 0, 0, .54);
+        cursor: pointer;
+      }
+
+      #table .thead .tr .th:not(.sorted):hover .icon {
+        color: rgba(0, 0, 0, .26);
+        font-size: 16px;
+      }
+
+      #table .thead .tr .th {
+        position: relative;
+        overflow: visible;
+      }
+
+      #table .thead .tr iron-icon.sorted-ascending,
+      #table .thead .tr iron-icon.sorted-descending {
+        color: rgba(0, 0, 0, .87);
+        position: absolute;
+        left: -18px;
+        width: 16px;
+        top: 20px;
+        height: 16px;
+      }
+
+      #table .thead .tr iron-icon.sorted-ascending {
+        margin-top: -2px;
+      }
+
+      #table .thead .tr iron-icon.sorted-descending {
+        margin-top: 3px;
+      }
+
+      #table .thead .tr .th:not(.sorted-ascending):not(.sorted-descending) iron-icon {
+        display: none;
+      }
+
+      #table .thead .tr .th:not(.sorted-ascending) .sorted-ascending,
+      #table .thead .tr .th:not(.sorted-descending) .sorted-descending {
+        opacity: 0.4;
+      }
+
+      #table .thead .tr .th.sorted-ascending .sorted-ascending,
+      #table .thead .tr .th.sorted-descending .sorted-descending {
+
+      }
+
+      #table .tbody .tr {
+        border-top: 1px solid rgba(0, 0, 0, .22);
+      }
+
+      #table .tbody .tr:hover {
+        background: #eeeeee;
+      }
+
+      #table .tbody .tr.selected {
+        background: #f5f5f5;
+      }
+
+      #table .tbody .tr .td a {
+        color: #0277BD;
+        text-decoration: none;
+      }
+
+      #table .thead .tr .th.actions, #table .tbody .tr .td.actions {
+        flex: 0;
+        min-width: 48px;
+        text-align: right;
+      }
+
+      #table .tbody .tr .td.actions paper-menu-button {
+        padding: 0;
+      }
+
+      #table .tbody .tr .td.actions paper-icon-button {
+        line-height: 0;
+      }
+
+      #table .tbody .tr:not(:hover) .td.actions {
+        /*opacity: 0;*/
+
+      }
+
+      #table .tbody .tr .td {
+        font-size: 13px;
+        color: rgba(0, 0, 0, .87);
+      }
+
+      #table {
+        position: relative;
+      }
+
+      #table #loadingIndicator {
+        display: none;
+
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        margin: auto;
+
+        z-index: 2;
+      }
+
+      #table #loadingIndicator #spinner {
+        display: block;
+        width: 100%;
+      }
+
+      #table #loadingIndicator[active] {
+        display: block;
+      }
+    </style>
+  </template>
+</dom-module>
