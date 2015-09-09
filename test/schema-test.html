@@ -32,7 +32,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     describe('schema binding functionality', function () {
       beforeEach(function (done) {
 
-        tableEl.data = [
+        tableEl.set('data', [
           {
             sku: 'SK-123',
             title: 'SK product',
@@ -48,9 +48,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             title: 'SK product 3',
             price: 19.99
           }
-        ];
+        ]);
 
-        setTimeout(done, 1); // Needs a tick for the table to actually render
+        done();
       });
 
       it('should generate availableColumns when a new schema is assigned', function (done) {
