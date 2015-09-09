@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
 
-        expect(tableEl.$.title.innerHTML).to.match(new RegExp(title));
+        expect(tableEl.querySelector('#title').innerHTML).to.match(new RegExp(title));
         done();
       });
 
@@ -120,7 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         });
 
-        expect(tableEl.$.title.innerHTML).to.match(new RegExp(tableEl.schema.title));
+        expect(tableEl.querySelector('#title').innerHTML).to.match(new RegExp(tableEl.schema.title));
         done();
       });
 
