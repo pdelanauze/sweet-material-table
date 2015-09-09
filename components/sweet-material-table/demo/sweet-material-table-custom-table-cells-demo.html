@@ -1,0 +1,302 @@
+<link rel="import" href="../../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-custom-table-cells-demo">
+
+  <link rel="import" href="../../iron-icons/iron-icons.html" />
+  <link rel="import" href="../../paper-material/paper-material.html" />
+
+  <link rel="import" href="../sweet-material-table.html"/>
+  <link rel="import" href="../sweet-material-table-item.html"/>
+  <link rel="import" href="sweet-material-numeric-table-item.html"/>
+  <link rel="import" href="sweet-material-percent-table-item.html"/>
+  <link rel="import" href="../sweet-material-table-styles.html"/>
+
+  <template>
+
+    <style include="sweet-material-table-styles"></style>
+    <style>
+      sweet-material-table::shadow #table .th:not([data-column="dessert"]) {
+        text-align: right;
+      }
+
+      #table .thead .tr .th {
+        cursor: auto;
+      }
+
+      #table .thead .tr .th:not([data-column="dessert"]) {
+        font-weight: bold;
+        color: #C62828;
+      }
+
+      #table .tbody .tr .td:last-child iron-icon {
+        color: #C62828;
+        width: 20px;
+        height: 20px;
+        margin-top: -4px;
+      }
+
+    </style>
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="Custom templates demo"
+          schema="[[schema]]"
+          data="[[data]]"
+          start="{{start}}"
+          columns="{{columns}}"
+          per-page="{{perPage}}"
+          total="{{total}}"
+          custom-thead-content=".thead"
+          custom-tbody-content=".tbody"
+          global-actions="[[globalActions]]">
+
+        <div class="thead">
+          <div class="tr horizontal layout">
+            <div class="th checkbox">
+              <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
+            </div>
+            <template is="dom-repeat" items="{{columns}}" as="column">
+              <div class="th flex" data-column$="[[column.key]]">
+                <span>[[column.title]]</span>
+              </div>
+            </template>
+            <div class="th">Actions</div>
+          </div>
+        </div>
+
+        <div class="tbody">
+
+          <template is="dom-repeat" items="{{data}}" as="instance">
+
+            <div class="tr horizontal layout" index="[[index]]">
+              <div class="td checkbox">
+                <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
+              </div>
+
+              <template is="dom-repeat" items="{{columns}}" as="column">
+
+                <div class="flex td">
+
+                  <template is="dom-if" if="[[_isNumericColumn(column)]]">
+                    <sweet-material-numeric-table-item class="flex"
+                                                       field="[[column]]"
+                                                       data-column$="[[column.key]]"
+                                                       row="{{instance}}"></sweet-material-numeric-table-item>
+                  </template>
+                  <template is="dom-if" if="[[_isPercentColumn(column)]]">
+                    <sweet-material-percent-table-item class="flex"
+                                                       field="[[column]]"
+                                                       data-column$="[[column.key]]"
+                                                       row="{{instance}}"></sweet-material-percent-table-item>
+                  </template>
+                  <template is="dom-if" if="[[_isStringColumn(column)]]">
+                    <sweet-material-table-item class="flex"
+                                               field="[[column]]"
+                                               data-column$="[[column.key]]"
+                                               row="{{instance}}"></sweet-material-table-item>
+                  </template>
+
+                </div>
+
+
+              </template>
+              <div class="td">
+                <iron-icon icon="icons:delete"></iron-icon>
+              </div>
+            </div>
+          </template>
+        </div>
+
+      </sweet-material-table>
+    </paper-material>
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-table-custom-table-cells-demo',
+      ready: function () {
+        this.schema = {
+          title: 'Nutrition',
+          properties: {
+            dessert: {
+              type: 'string',
+              title: 'Dessert (100g serving)'
+            },
+            calories: {
+              type: 'number',
+              title: 'Calories'
+            },
+            fat: {
+              type: 'number',
+              title: 'Fat (g)'
+            },
+            carbs: {
+              type: 'number',
+              title: 'Carbs (g)'
+            },
+            protein: {
+              type: 'number',
+              title: 'Protein (g)'
+            },
+            sodium: {
+              type: 'number',
+              title: 'Sodium (mg)'
+            },
+            calcium: {
+              type: 'number',
+              title: 'Calcium (%)'
+            },
+            iron: {
+              type: 'number',
+              title: 'Iron (%)'
+            }
+          }
+        };
+
+        this.superData = [
+          {key: 'test'},
+          {key: 'test2'}
+        ];
+
+        this.data = [
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+        ];
+
+        this.perPage = 10;
+        this.start = 0;
+        this.total = 100;
+        this.globalActions = [
+          {
+            name: 'new',
+            icon: 'icons:new',
+            title: 'New record'
+          },
+          {
+            name: 'push-to-cloud',
+            iron: 'icons:cloud',
+            title: 'Push into your cloud' /* Cloud to butt extension is magical */
+          }
+        ];
+      },
+      _selectRow: function () {
+        return this.$.table._selectRow.apply(this.$.table, arguments);
+      },
+      _isNumericColumn: function (column) {
+        return [
+              'calories',
+              'fat',
+              'carbs',
+              'protein',
+              'sodium'
+            ].indexOf(column.key) !== -1;
+      },
+      _isPercentColumn: function (column) {
+        return [
+              'calcium',
+              'iron'
+            ].indexOf(column.key) !== -1;
+      },
+      _isStringColumn: function (column) {
+        return !this._isNumericColumn(column) && !this._isPercentColumn(column);
+      }
+    });
+  </script>
+</dom-module>

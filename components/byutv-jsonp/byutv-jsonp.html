@@ -1,0 +1,53 @@
+<!--
+@license
+Copyright (c) 2015 BYU Broadcasting. All rights reserved.
+This code is licensed under the MIT style license found as part of this project.
+
+Authors:
+
+	Ron Peterson
+-->
+<!--
+The `byutv-jsonp` element (`<byutv-jsonp>`) exposes network request functionality.
+It is a Polymer v1.0+ element that facilitates making JSONP requests.
+It uses Polymer behaviors (`Byutv.behaviors.Jsonp`).
+It is patterned after Polymer's `iron-ajax` element (`<iron-ajax>`).
+It has been tested using unit tests.
+It is part of the BYUtv Elements group of elements.
+
+#### Example:
+
+```html
+	<byutv-jsonp
+				 auto
+				 url="http://jsonplaceholder.typicode.com/posts"
+				 params='{"userId":"1"}'
+				 on-response="handleResponse"
+				 debounce-duration="300"></byutv-jsonp>
+```
+
+When `auto` is set to `true`, `<byutv-jsonp>` performs a request whenever its
+non-readOnly attributes are changed.  `debounce-duration` can be used to
+debounce automatically generated requests if multiple attributes are changed
+sequentially.  You can trigger a request explicitly by calling `generateRequest`
+on the `<byutv-jsonp>`.
+
+####Note:####
+- The `params` attribute must be double quoted JSON.
+- Multiple requests can be performed using the same `<byutv-jsonp>`.
+- The `Byutv.Jsonp` or `Byutv.elements.Jsonp` factory/constructor methods can be used to create new instances of `<byutv-jsonp>` e.g. `new Byutv.Jsonp(options)`.
+- The `Byutv.behaviors.Jsonp` *behavior* can be used to extend `<byutv-jsonp>`.
+
+View **Byutv.behaviors.Jsonp** for additional documenation.
+
+[View readme, changelog, and other information on GitHub](http://github.com/coderfin/byutv-jsonp/)
+
+@group BYUtv Elements
+@element byutv-jsonp
+@demo demo/index.html
+@hero hero.svg
+@homepage http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/index.html
+-->
+<link rel="import" href="../polymer/polymer.html">
+<script src="scripts/byutv-behaviors-jsonp.js"></script>
+<script src="scripts/byutv-jsonp.js"></script>

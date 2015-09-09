@@ -1,0 +1,173 @@
+<link rel="import" href="../../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-schema-demo">
+
+  <link rel="import" href="../../paper-material/paper-material.html" />
+  <link rel="import" href="../sweet-material-table.html" />
+
+  <template>
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="Schema demo"
+          schema="[[schema]]"
+          data="[[data]]"
+          start="{{start}}"
+          per-page="{{perPage}}"
+          total="{{total}}">
+
+      </sweet-material-table>
+    </paper-material>
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-table-schema-demo',
+      ready: function () {
+        this.schema = {
+          title: 'Nutrition',
+          properties: {
+            dessert: {
+              type: 'string',
+              title: 'Dessert (100g serving)'
+            },
+            calories: {
+              type: 'number',
+              title: 'Calories'
+            },
+            fat: {
+              type: 'number',
+              title: 'Fat (g)'
+            },
+            carbs: {
+              type: 'number',
+              title: 'Carbs (g)'
+            },
+            protein: {
+              type: 'number',
+              title: 'Protein (g)'
+            },
+            sodium: {
+              type: 'number',
+              title: 'Sodium (mg)'
+            },
+            calcium: {
+              type: 'number',
+              title: 'Calcium (%)'
+            },
+            iron: {
+              type: 'number',
+              title: 'Iron (%)'
+            }
+          }
+        };
+
+        this.data = [
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+          {
+            dessert: 'Frozen yogurt',
+            calories: 159,
+            fat: 6.0,
+            carbs: 24,
+            protein: 4.0,
+            sodium: 87,
+            calcium: 14,
+            iron: 1
+          },
+        ];
+
+        this.perPage = 10;
+        this.start = 0;
+        this.total = 100;
+      }
+    });
+  </script>
+</dom-module>

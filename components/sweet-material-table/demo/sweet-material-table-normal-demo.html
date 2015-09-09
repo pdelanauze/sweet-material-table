@@ -1,0 +1,68 @@
+<link rel="import" href="../../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-normal-demo">
+
+  <link rel="import" href="../../paper-material/paper-material.html" />
+  <link rel="import" href="../sweet-material-table.html" />
+
+  <template>
+
+    <paper-material>
+      <sweet-material-table
+          id="table"
+          title="Normal demo"
+          columns="[[columns]]"
+          available-columns="[[availableColumns]]"
+          data="[[data]]"
+          start="{{start}}"
+          per-page="{{perPage}}"
+          total="{{total}}"
+          single-actions="[[singleActions]]">
+
+      </sweet-material-table>
+    </paper-material>
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-table-normal-demo',
+      ready: function () {
+
+        this.columns = [
+          {key: 'title', title: 'Title'},
+          {key: 'content', title: 'Content'}
+        ];
+
+        this.availableColumns = [
+          {key: 'title', title: 'Title'},
+          {key: 'content', title: 'Content'},
+          {key: 'createdAt', title: 'Created at'}
+        ];
+
+        this.data = [
+          {
+            title: 'First blog post',
+            content: 'This is the content of the first blog post , bla bla tech bla dev bla polymer bla bla...',
+            createdAt: new Date()
+          },
+          {
+            title: 'Second blog post',
+            content: 'This is the content of the second blog post , bla bla tech bla dev bla more polymer bla bla...',
+            createdAt: new Date(),
+            id: 3
+          }
+        ];
+
+        this.singleActions = [
+          {
+            title: 'Delete',
+            name: 'delete'
+          }
+        ];
+
+        this.perPage = 50;
+        this.start = 0;
+        this.total = 150;
+      }
+    });
+  </script>
+</dom-module>

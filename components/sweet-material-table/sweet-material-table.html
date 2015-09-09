@@ -1,0 +1,533 @@
+<link rel="import" href="../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table">
+
+  <link rel="import" href="../paper-checkbox/paper-checkbox.html"/>
+  <link rel="import" href="../iron-icons/iron-icons.html"/>
+  <link rel="import" href="../paper-item/paper-item.html"/>
+  <link rel="import" href="../paper-menu/paper-menu.html"/>
+  <link rel="import" href="../paper-icon-button/paper-icon-button.html"/>
+  <link rel="import" href="../paper-menu-button/paper-menu-button.html"/>
+  <link rel="import" href="../paper-progress/paper-progress.html"/>
+
+  <link rel="import" href="./sweet-material-table-item.html"/>
+  <link rel="import" href="./sweet-material-table-styles.html"/>
+
+  <template>
+
+    <style include="sweet-material-table-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <div id="tableHeader" class="horizontal layout">
+
+      <div class="label flex primary-title">
+        <template is="dom-if" if="[[customTitleContent]]">
+          <content select="[[customTitleContent]]"></content>
+        </template>
+        <template is="dom-if" if="[[!customTitleContent]]">
+          <span id="title">[[title]]</span>
+        </template>
+      </div>
+
+      <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
+      <div class="actions">
+
+        <template is="dom-repeat" items="[[bulkActions]]" as="action">
+
+          <iron-icon class="alternate-action"
+                     icon="[[action.icon]]"
+                     title="[[action.title]]"
+                     action="[[action.name]]"
+                     on-click="_actionClicked"></iron-icon>
+
+        </template>
+
+        <paper-menu-button
+            id="filterListMenu"
+            visible$="[[availableColumns.length]]"
+            horizontal-align="right"
+            open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+          <paper-icon-button icon="icons:filter-list" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content">
+            <template is="dom-repeat" items="[[availableColumns]]" as="column">
+
+              <paper-checkbox checked$="{{_isColumnVisible(column)}}"
+                              column="[[column]]"
+                              on-click="_selectColumn">
+                <span>[[column.title]]</span>
+              </paper-checkbox>
+
+            </template>
+          </paper-menu>
+        </paper-menu-button>
+
+        <paper-menu-button
+            id="globalActionsMenu"
+            visible$="[[globalActions.length]]"
+            horizontal-align="right"
+            open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+          <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content">
+            <template is="dom-repeat" items="[[globalActions]]" as="action">
+
+              <paper-item action="[[action.name]]"
+                          on-click="_actionClicked">
+                <span>[[action.title]]</span>
+              </paper-item>
+
+            </template>
+          </paper-menu>
+        </paper-menu-button>
+
+      </div>
+    </div>
+    <div id="table">
+
+      <template is="dom-if" if="[[customTheadContent]]">
+        <content select="[[customTheadContent]]"></content>
+      </template>
+
+      <template is="dom-if" if="[[!customTheadContent]]">
+        <div class="thead">
+          <div class="tr horizontal layout">
+            <div class="th checkbox">
+              <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
+            </div>
+            <template is="dom-repeat" items="{{columns}}" as="column">
+              <div class="flex th" data-column$="[[column.key]]" on-click="_sortColumn">
+
+                <iron-icon class="sorted-descending"
+                           icon="icons:arrow-drop-down"></iron-icon>
+
+                <iron-icon class="sorted-ascending"
+                           icon="icons:arrow-drop-up"></iron-icon>
+
+                <span>[[column.title]]</span>
+              </div>
+            </template>
+
+            <template is="dom-if" if="[[singleActions.length]]">
+              <div class="flex th actions">&nbsp;</div>
+            </template>
+          </div>
+        </div>
+      </template>
+
+      <div id="loadingIndicator" active$="[[loading]]">
+        <paper-progress id="spinner" active$="[[loading]]" indeterminate="true"></paper-progress>
+      </div>
+
+      <template is="dom-if" if="[[customTbodyContent]]">
+        <content select="[[customTbodyContent]]"></content>
+      </template>
+
+      <template is="dom-if" if="[[!customTbodyContent]]">
+        <div class="tbody">
+
+          <template is="dom-repeat" items="{{data}}" as="instance">
+            <div class="tr horizontal layout" index="[[index]]">
+              <div class="td checkbox">
+                <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
+              </div>
+
+              <template is="dom-repeat" items="{{columns}}" as="column">
+
+                <div class="flex td">
+                  <sweet-material-table-item class="flex"
+                                             field="[[column]]"
+                                             data-column$="[[column.key]]"
+                                             row="{{instance}}"></sweet-material-table-item>
+                </div>
+              </template>
+
+              <template is="dom-if" if="[[singleActions.length]]">
+                <div class="flex td actions">
+
+                  <paper-menu-button>
+                    <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                      <template is="dom-repeat" items="[[singleActions]]" as="action" index-as="actionIndex">
+                        <paper-item index="[[index]]"
+                                    action="[[action.name]]"
+                                    on-click="_singleActionClicked">
+                          <span>[[action.title]]</span>
+                        </paper-item>
+                      </template>
+                    </paper-menu>
+                  </paper-menu-button>
+                </div>
+              </template>
+            </div>
+          </template>
+
+        </div>
+      </template>
+    </div>
+
+    <div id="tableFooter" class="end-justified" style="text-align: right;">
+      <span id="perPageLabel">Rows per page:</span>
+      <span id="perPageValue">[[perPage]]</span>
+      <paper-menu-button
+          id="perPageSelector"
+          vertical-align="bottom"
+          horizontal-align="right"
+          open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+        <paper-icon-button icon="icons:arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
+        <paper-menu class="dropdown-content">
+          <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
+          <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
+          <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
+        </paper-menu>
+      </paper-menu-button>
+        <span id="paginationStatus" class="flex">
+          <span>[[start]]</span>
+          <span>-</span>
+          <span>[[_getEndValue(start,perPage,total)]]</span>
+          <span> of </span>
+          <span>[[total]]</span>
+        </span>
+        <span id="previousPage" class="flex" on-click="_previousPageClicked">
+          <iron-icon icon="icons:chevron-left"></iron-icon>
+        </span>
+        <span id="nextPage" class="flex" on-click="_nextPageClicked">
+          <iron-icon icon="icons:chevron-right"></iron-icon>
+        </span>
+    </div>
+
+  </template>
+
+  <script>
+    /**
+     *
+     * sweet-material-table v0.2.0
+     *
+     */
+    Polymer({
+      is: 'sweet-material-table',
+      properties: {
+        title: String,
+        schema: {
+          type: Object
+        },
+        data: {
+          type: Array,
+          notify: true
+        },
+        columns: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        },
+        availableColumns: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        perPage: {
+          type: Number,
+          notify: true,
+          default: 50
+        },
+        start: {
+          type: Number,
+          notify: true,
+          default: 0
+        },
+        total: {
+          type: Number,
+          default: 0
+        },
+        sortColumn: {
+          type: String,
+          notify: true
+        },
+        sortDirection: {
+          type: String,
+          notify: true
+        },
+        loading: {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
+        selectedIndexes: {
+          type: Array,
+          notify: true,
+          value: function () {
+            return [];
+          }
+        },
+        singleActions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        bulkActions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        globalActions: {
+          type: Array,
+          value: function () {
+            return [];
+          }
+        },
+        customTitleContent: {
+          type: String,
+          value: false
+        },
+        customTheadContent: {
+          type: String,
+          value: false
+        },
+        customTbodyContent: {
+          type: String,
+          value: false
+        },
+
+        _paperMenuButtonOpenAnimationConfig: {
+          type: Object,
+          value: function () {
+            return {
+              name: 'fade-in-animation',
+              timing: {
+                delay: 0,
+                duration: 200
+              }
+            }, {
+              name: 'paper-menu-grow-width-animation',
+              timing: {
+                delay: 100,
+                duration: 150,
+                easing: Polymer.PaperMenuButton.ANIMATION_CUBIC_BEZIER
+              }
+            }, {
+              name: 'paper-menu-grow-height-animation',
+              timing: {
+                delay: 100,
+                duration: 275,
+                easing: Polymer.PaperMenuButton.ANIMATION_CUBIC_BEZIER
+              }
+            };
+          }
+        }
+      },
+      observers: [
+        '_schemaChanged(schema)',
+        '_selectedIndexesChanged(selectedIndexes.splices)',
+        '_paginationChanged(start,perPage,total)',
+        '_sortDirectionChanged(sortColumn,sortDirection)'
+      ],
+      ready: function () {
+
+      },
+
+      _schemaChanged: function () {
+
+        var schema = this.schema;
+
+        if (schema && schema.title && !this.title) {
+          this.set('title', schema.title);
+        }
+
+        if (!this.columns.length && schema) {
+          for (var key in schema.properties) {
+            this.push('columns', {
+              title: schema.properties[key].title,
+              key: key
+            });
+          }
+        }
+
+        if (!this.availableColumns.length && schema) {
+          for (var key in schema.properties) {
+            this.push('availableColumns', {
+              title: schema.properties[key].title,
+              key: key
+            });
+          }
+        }
+      },
+      _paginationChanged: function (start, perPage, total) {
+        if (start === 0) {
+          this.$.previousPage.classList.add('disabled');
+        } else {
+          this.$.previousPage.classList.remove('disabled');
+        }
+
+        if (start + perPage >= total) {
+          this.$.nextPage.classList.add('disabled');
+        } else {
+          this.$.nextPage.classList.remove('disabled');
+        }
+
+      },
+
+      _getTitle: function (title, schemaTitle) {
+        debugger;
+        if (title) {
+          return title;
+        }
+        if (schemaTitle) {
+          return schemaTitle;
+        }
+        return '';
+      },
+      _getEndValue: function (start, perPage) {
+        var end = start + perPage;
+        if (end > this.total) {
+          end = this.total;
+        }
+        return end;
+      },
+
+      _nextPageClicked: function (e) {
+        if (e.currentTarget.className.match(/disabled/)) {
+          return;
+        }
+        this.start = this.start + this.perPage;
+      },
+      _previousPageClicked: function (e) {
+        if (e.currentTarget.className.match(/disabled/)) {
+          return;
+        }
+        var newStart = this.start - this.perPage;
+        if (newStart < 0) {
+          this.start = 0;
+        } else {
+          this.start = newStart;
+        }
+      },
+      _perPageSelectionChanged: function (event) {
+        this.perPage = parseInt(event.target.attributes.value.value);
+      },
+
+      _isColumnVisible: function (column) {
+        for (var i = 0, ii = this.columns.length; i < ii; i++) {
+          if (this.columns[i].key === column.key) {
+            return true;
+          }
+        }
+        return false;
+      },
+      _selectColumn: function (e) {
+        var column = e.currentTarget.column;
+
+        var removedSelection = false;
+        for (var i = 0, ii = this.columns.length; i < ii; i++) {
+          if (this.columns[i].key === column.key) {
+            this.splice('columns', i, 1);
+            removedSelection = true;
+            break;
+          }
+        }
+
+        if (!removedSelection) {
+          this.push('columns', column);
+        }
+
+      },
+      _sortColumn: function (e) {
+        var column = e.currentTarget.attributes['data-column'].value;
+
+        if (this.sortColumn === column) {
+          if (this.sortDirection === 'ascending') {
+            this.sortColumn = null;
+            this.sortDirection = null;
+          } else {
+            this.sortDirection = 'ascending';
+          }
+        } else {
+          this.sortColumn = column;
+          this.sortDirection = 'descending';
+        }
+      },
+      _sortDirectionChanged: function (sortColumn, sortDirection) {
+        // Clear the classes on the ths
+        var tableHeaders = this.$.table.querySelectorAll('.thead .th');
+
+        for (var i = 0, ii = tableHeaders.length; i < ii; i++) {
+          var th = tableHeaders[i];
+          th.classList.remove('sorted-ascending');
+          th.classList.remove('sorted-descending');
+
+          if (this.sortDirection
+              && this.sortColumn
+              && th.attributes['data-column'] && th.attributes['data-column'].value === this.sortColumn) {
+            th.classList.add('sorted-' + this.sortDirection);
+          }
+        }
+      },
+
+      _selectAll: function () {
+        if (this.selectedIndexes.length === this.data.length) {
+          this.splice('selectedIndexes', 0, this.data.length);
+        } else {
+          this.splice('selectedIndexes', 0, this.selectedIndexes.length);
+          for (var i = 0, ii = this.data.length; i < ii; i++) {
+            this.push('selectedIndexes', i);
+          }
+        }
+      },
+      _selectRow: function (e) {
+        var index = e.currentTarget.index;
+        var indexOf = this.selectedIndexes.indexOf(index);
+        if (indexOf === -1) {
+          this.push('selectedIndexes', index);
+        } else {
+          this.splice('selectedIndexes', indexOf, 1);
+        }
+      },
+      _selectedIndexesChanged: function () {
+        var rows = this.$.table.querySelectorAll('.tbody .tr');
+        for (var i = 0, ii = rows.length; i < ii; i++) {
+          rows[i].querySelector('.td:first-child paper-checkbox').checked = false;
+          rows[i].classList.remove('selected');
+        }
+        var selectedIndexesLength = this.selectedIndexes.length;
+        for (var i = 0, ii = selectedIndexesLength; i < ii; i++) {
+          rows[this.selectedIndexes[i]].querySelector('.td:first-child paper-checkbox').checked = true;
+          rows[this.selectedIndexes[i]].classList.add('selected');
+        }
+
+        var selectAllElement = this.querySelector('#selectAll');
+        if (selectAllElement) {
+          selectAllElement.checked = (this.selectedIndexes && this.data && selectedIndexesLength === this.data.length);
+        }
+
+        if (selectedIndexesLength) {
+          this.$.tableHeader.classList.add('alternate-header');
+          this.alternateHeaderTitle = selectedIndexesLength + ' row' + (selectedIndexesLength === 1 ? '' : 's') + ' selected';
+        } else {
+          this.$.tableHeader.classList.remove('alternate-header');
+        }
+      },
+
+      _actionClicked: function (e) {
+        var actionName = e.currentTarget.action;
+        this.fire('action', {
+          name: actionName,
+          indexes: this.selectedIndexes
+        });
+      },
+      _singleActionClicked: function (e) {
+        var actionName = e.currentTarget.action;
+        this.fire('singleAction', {
+          name: actionName,
+          index: e.currentTarget.index
+        });
+      }
+
+    })
+  </script>
+</dom-module>

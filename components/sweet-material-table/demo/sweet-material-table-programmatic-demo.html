@@ -1,0 +1,54 @@
+<link rel="import" href="../../polymer/polymer.html"/>
+
+<dom-module id="sweet-material-table-normal-demo">
+
+  <link rel="import" href="../../paper-material/paper-material.html" />
+  <link rel="import" href="../sweet-material-table.html"/>
+
+  <template>
+    <paper-material id="paper"></paper-material>
+  </template>
+  <script>
+    Polymer({
+      is: 'sweet-material-table-normal-demo',
+      ready: function () {
+
+        var el = document.createElement('sweet-material-table');
+
+        el.title = 'Programmatically created demo';
+
+        el.columns = [
+          {key: 'title', title: 'Title'},
+          {key: 'content', title: 'Content'}
+        ];
+
+        el.availableColumns = [
+          {key: 'title', title: 'Title'},
+          {key: 'content', title: 'Content'},
+          {key: 'createdAt', title: 'Created at'}
+        ];
+
+        el.data = [
+          {
+            title: 'First blog post',
+            content: 'This is the content of the first blog post , bla bla tech bla dev bla polymer bla bla...',
+            createdAt: new Date()
+          },
+          {
+            title: 'Second blog post',
+            content: 'This is the content of the second blog post , bla bla tech bla dev bla more polymer bla bla...',
+            createdAt: new Date(),
+            id: 3
+          }
+        ];
+
+        el.perPage = 50;
+        el.start = 0;
+        el.total = 150;
+
+        this.querySelector('#paper').appendChild(el);
+
+      }
+    });
+  </script>
+</dom-module>
