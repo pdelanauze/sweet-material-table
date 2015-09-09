@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "#1.0.6",
+    "polymer": "^1.1.1",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
     "paper-menu": "PolymerElements/paper-menu#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
@@ -32,7 +32,7 @@
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
     "paper-styles": "PolymerElements/paper-styles#^1.0.0",
     "paper-material": "PolymerElements/paper-material#^1.0.0",
-    "web-component-tester": "Polymer/web-component-tester#~3.3.0",
+    "web-component-tester": "Polymer/web-component-tester#~3.3.21",
     "byutv-jsonp": "~1.2.0"
   }
 }
