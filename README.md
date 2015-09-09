@@ -4,7 +4,7 @@ A material design table implementation. Based on http://www.google.com/design/sp
 
 ### Demo
 
-[YQL demo](http://pdelanauze.github.io/sweet-material-table/bower_components/sweet-material-table/demo/)
+[YQL demo](http://pdelanauze.github.io/sweet-material-table/components/sweet-material-table/demo/)
 
 ```
 <sweet-material-table
