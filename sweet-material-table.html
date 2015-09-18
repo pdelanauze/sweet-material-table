@@ -385,7 +385,7 @@
         return '';
       },
       _getEndValue: function (start, perPage) {
-        var end = start + perPage;
+        var end = start + perPage - 1;
         if (end > this.total) {
           end = this.total;
         }
