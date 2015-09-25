@@ -234,16 +234,16 @@
         perPage: {
           type: Number,
           notify: true,
-          default: 50
+          value: 50
         },
         start: {
           type: Number,
           notify: true,
-          default: 0
+          value: 0
         },
         total: {
           type: Number,
-          default: 0
+          value: 0
         },
         sortColumn: {
           type: String,
@@ -385,7 +385,7 @@
         return '';
       },
       _getEndValue: function (start, perPage) {
-        var end = start + perPage;
+        var end = start + perPage - 1;
         if (end > this.total) {
           end = this.total;
         }
