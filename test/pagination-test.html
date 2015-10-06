@@ -71,10 +71,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.start = 0;
         tableEl.total = 200;
 
-        tableEl.$.nextPage.classList.remove('disabled');
-        tableEl.$.previousPage.classList.remove('disabled');
-
-        setTimeout(done, 1); // Needs a tick for the table to actually render
+        setTimeout(function () {
+          // Need to wait for the table's footer to render before we can access its elements
+          tableEl.$$('#nextPage').classList.remove('disabled');
+          tableEl.$$('#previousPage').classList.remove('disabled');
+          done();
+        }, 1);
       });
 
       it('should fire an event when the perPage selection changes', function (done) {
@@ -87,14 +89,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           done();
         });
 
-        tableEl.$.perPageSelector.querySelector('paper-item[value="100"]').click();
+        tableEl.$$('#perPageSelector').querySelector('paper-item[value="100"]').click();
 
       });
 
       it('should update the selection in the view when the perPage attribute is changed', function (done) {
 
         var perPageValue = tableEl.perPage;
-        var perPageLabel = tableEl.$.perPageValue;
+        var perPageLabel = tableEl.$$('#perPageValue');
         expect(perPageLabel.innerHTML).to.match(new RegExp(perPageValue));
 
         perPageValue = tableEl.perPage = 50;
@@ -117,7 +119,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         });
 
-        tableEl.$.nextPage.click();
+        tableEl.$$('#nextPage').click();
 
       });
 
@@ -134,7 +136,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         });
 
-        tableEl.$.previousPage.click();
+        tableEl.$$('#previousPage').click();
 
       });
 
@@ -151,7 +153,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         });
 
-        tableEl.$.previousPage.click();
+        tableEl.$$('#previousPage').click();
 
       });
 
@@ -161,8 +163,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.start = 90;
         tableEl.perPage = 10;
 
-        expect(tableEl.$.nextPage.className).to.match(/disabled/);
-        expect(tableEl.$.previousPage.className).to.not.match(/disabled/);
+        expect(tableEl.$$('#nextPage').className).to.match(/disabled/);
+        expect(tableEl.$$('#previousPage').className).to.not.match(/disabled/);
         done();
 
       });
@@ -172,8 +174,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.start = 0;
         tableEl.perPage = 10;
 
-        expect(tableEl.$.previousPage.className).to.match(/disabled/);
-        expect(tableEl.$.nextPage.className).to.not.match(/disabled/);
+        expect(tableEl.$$('#previousPage').className).to.match(/disabled/);
+        expect(tableEl.$$('#nextPage').className).to.not.match(/disabled/);
         done();
       });
 
@@ -182,8 +184,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.start = 0;
         tableEl.perPage = 500;
 
-        expect(tableEl.$.previousPage.className).to.match(/disabled/);
-        expect(tableEl.$.nextPage.className).to.match(/disabled/);
+        expect(tableEl.$$('#previousPage').className).to.match(/disabled/);
+        expect(tableEl.$$('#nextPage').className).to.match(/disabled/);
         done();
       });
 
@@ -196,8 +198,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Given the previous values , next page should be allowed to perform an action, but for simplicity, we disable
         // any action when the disabled class is present on the nextPage button
 
-        tableEl.$.nextPage.classList.add('disabled');
-        tableEl.$.nextPage.click();
+        tableEl.$$('#nextPage').classList.add('disabled');
+        tableEl.$$('#nextPage').click();
 
         setTimeout(function(){
           expect(tableEl.start).to.equal(0);
@@ -215,8 +217,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Given the previous values , next page should be allowed to perform an action, but for simplicity, we disable
         // any action when the disabled class is present on the nextPage button
 
-        tableEl.$.previousPage.classList.add('disabled');
-        tableEl.$.previousPage.click();
+        tableEl.$$('#previousPage').classList.add('disabled');
+        tableEl.$$('#previousPage').click();
 
         setTimeout(function(){
           expect(tableEl.start).to.equal(50);
@@ -231,7 +233,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tableEl.set('total', 2);
 
         setTimeout(function () {
-          expect(tableEl.$.paginationStatus.innerText).to.match(/0\s*-\s*2\sof\s2/);
+          expect(tableEl.$$('#paginationStatus').innerText).to.match(/0\s*-\s*2\sof\s2/);
           done();
         }, 1);
       });

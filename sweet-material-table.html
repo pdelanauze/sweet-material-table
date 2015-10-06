@@ -169,21 +169,25 @@
       </template>
     </div>
 
-    <div id="tableFooter" class="end-justified" style="text-align: right;">
-      <span id="perPageLabel">Rows per page:</span>
-      <span id="perPageValue">[[perPage]]</span>
-      <paper-menu-button
-          id="perPageSelector"
-          vertical-align="bottom"
-          horizontal-align="right"
-          open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
-        <paper-icon-button icon="icons:arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
-        <paper-menu class="dropdown-content">
-          <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
-          <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
-          <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
-        </paper-menu>
-      </paper-menu-button>
+    <template is="dom-if" if="[[customTfootContent]]">
+      <content select="[[customTfootContent]]"></content>
+    </template>
+    <template is="dom-if" if="[[!customTfootContent]]">
+      <div id="tableFooter" class="end-justified" style="text-align: right;">
+        <span id="perPageLabel">Rows per page:</span>
+        <span id="perPageValue">[[perPage]]</span>
+        <paper-menu-button
+            id="perPageSelector"
+            vertical-align="bottom"
+            horizontal-align="right"
+            open-animation-config="[[_paperMenuButtonOpenAnimationConfig]]">
+          <paper-icon-button icon="icons:arrow-drop-down" class="dropdown-trigger"></paper-icon-button>
+          <paper-menu class="dropdown-content">
+            <paper-item value="10" on-click="_perPageSelectionChanged">10</paper-item>
+            <paper-item value="50" on-click="_perPageSelectionChanged">50</paper-item>
+            <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
+          </paper-menu>
+        </paper-menu-button>
         <span id="paginationStatus" class="flex">
           <span>[[start]]</span>
           <span>-</span>
@@ -197,7 +201,8 @@
         <span id="nextPage" class="flex" on-click="_nextPageClicked">
           <iron-icon icon="icons:chevron-right"></iron-icon>
         </span>
-    </div>
+      </div>
+    </template>
 
   </template>
 
@@ -295,6 +300,10 @@
           type: String,
           value: false
         },
+        customTfootContent: {
+          type: String,
+          value: false
+        },
 
         _paperMenuButtonOpenAnimationConfig: {
           type: Object,
@@ -360,16 +369,24 @@
         }
       },
       _paginationChanged: function (start, perPage, total) {
-        if (start === 0) {
-          this.$.previousPage.classList.add('disabled');
-        } else {
-          this.$.previousPage.classList.remove('disabled');
+
+        var previousPageEl = this.$$('#previousPage');
+        var nextPageEl = this.$$('#nextPage');
+
+        if (previousPageEl) {
+          if (start === 0) {
+            previousPageEl.classList.add('disabled');
+          } else {
+            previousPageEl.classList.remove('disabled');
+          }
         }
 
-        if (start + perPage >= total) {
-          this.$.nextPage.classList.add('disabled');
-        } else {
-          this.$.nextPage.classList.remove('disabled');
+        if (nextPageEl) {
+          if (start + perPage >= total) {
+            nextPageEl.classList.add('disabled');
+          } else {
+            nextPageEl.classList.remove('disabled');
+          }
         }
 
       },
