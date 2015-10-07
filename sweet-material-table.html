@@ -28,7 +28,7 @@
       }
     </style>
 
-    <div id="tableHeader">
+    <div id="tableHeader" hidden$="[[noHeader]]">
 
       <div class="label primary-title">
         <template is="dom-if" if="[[customTitleContent]]">
@@ -306,6 +306,11 @@
         },
         customTfootContent: {
           type: String,
+          value: false
+        },
+
+        noHeader: {
+          type: Boolean,
           value: false
         },
 
