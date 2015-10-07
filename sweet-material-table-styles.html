@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html"/>
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
 
 <dom-module id="sweet-material-table-styles">
 
@@ -26,6 +27,7 @@
       }
 
       #tableHeader {
+        @apply(--layout-horizontal);
         padding: 0;
         height: 64px;
         max-height: 64px;
@@ -42,15 +44,15 @@
         line-height: 60px;
       }
 
+      #tableHeader .label {
+        @apply(--layout-flex);
+      }
+
       #table .thead .tr .th,
       #table .tbody .tr .td {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
-      }
-
-      #table .thead .tr .th,
-      #table .tbody .tr .td {
         padding-right: 56px;
       }
 
@@ -162,6 +164,12 @@
         padding-right: 32px;
       }
 
+      #tableFooter #paginationStatus,
+      #tableFooter #previousPage,
+      #tableFooter #nextPage {
+        @apply(--layout-flex);
+      }
+
       #tableFooter paper-menu-button {
         padding: 0 32px 0 0;
         width: 24px;
@@ -232,6 +240,11 @@
 
       }
 
+      #table .thead .tr,
+      #table .tbody .tr {
+        @apply(--layout-horizontal);
+      }
+
       #table .tbody .tr {
         border-top: 1px solid rgba(0, 0, 0, .22);
       }
@@ -271,6 +284,10 @@
       #table .tbody .tr .td {
         font-size: 13px;
         color: rgba(0, 0, 0, .87);
+      }
+
+      #table .tbody .td sweet-material-table-item {
+        @apply(--layout-flex);
       }
 
       #table {
