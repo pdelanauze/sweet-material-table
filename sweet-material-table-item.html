@@ -1,9 +1,11 @@
 <link rel="import" href="../polymer/polymer.html"/>
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html" />
+<link rel="import" href="../paper-tooltip/paper-tooltip.html" />
 
 <!-- Represents a single item row within a sweet-material-table element -->
 <dom-module id="sweet-material-table-item">
   <template>
+    <paper-tooltip>{{value}}</paper-tooltip>
     <div class="flex" id="value">{{value}}</div>
   </template>
   <script>

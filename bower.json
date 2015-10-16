@@ -22,6 +22,7 @@
     "polymer": "^1.1.1",
     "paper-checkbox": "PolymerElements/paper-checkbox#^1.0.0",
     "paper-menu": "PolymerElements/paper-menu#^1.0.0",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^1.0.0",
     "paper-item": "PolymerElements/paper-item#^1.0.0",
     "icon-icons": "PolymerElements/iron-icons#^1.0.0",
     "paper-menu-button": "PolymerElements/paper-menu-button#~1.0.0",
