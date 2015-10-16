@@ -193,7 +193,7 @@
           </paper-menu>
         </paper-menu-button>
         <span id="paginationStatus">
-          <span>[[start]]</span>
+          <span>[[_getStartValue(start, total)]]</span>
           <span>-</span>
           <span>[[_getEndValue(start,perPage,total)]]</span>
           <span> of </span>
@@ -383,7 +383,7 @@
         var nextPageEl = this.$$('#nextPage');
 
         if (previousPageEl) {
-          if (start === 0) {
+          if (start <= 1) {
             previousPageEl.classList.add('disabled');
           } else {
             previousPageEl.classList.remove('disabled');
@@ -391,7 +391,7 @@
         }
 
         if (nextPageEl) {
-          if (start + perPage >= total) {
+          if (start + perPage > total) {
             nextPageEl.classList.add('disabled');
           } else {
             nextPageEl.classList.remove('disabled');
@@ -409,6 +409,10 @@
           return schemaTitle;
         }
         return '';
+      },
+      _getStartValue: function (start, total) {
+        if (total === 0) return 0;
+        else return start;
       },
       _getEndValue: function (start, perPage) {
         var end = start + perPage - 1;
@@ -429,8 +433,8 @@
           return;
         }
         var newStart = this.start - this.perPage;
-        if (newStart < 0) {
-          this.start = 0;
+        if (newStart < 1) {
+          this.start = 1;
         } else {
           this.start = newStart;
         }
