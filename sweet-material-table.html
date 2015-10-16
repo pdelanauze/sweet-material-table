@@ -342,6 +342,7 @@
         }
       },
       observers: [
+        '_dataChanged(data.splices)',
         '_schemaChanged(schema)',
         '_selectedIndexesChanged(selectedIndexes.splices)',
         '_paginationChanged(start,perPage,total)',
@@ -349,6 +350,13 @@
       ],
       ready: function () {
 
+      },
+
+      _dataChanged: function (data) {
+        var scrollableContent = this.$.table.querySelector('.tbody');
+        if (scrollableContent) {
+          scrollableContent.scrollTop = 0;
+        }
       },
 
       _schemaChanged: function () {
@@ -401,7 +409,6 @@
       },
 
       _getTitle: function (title, schemaTitle) {
-        debugger;
         if (title) {
           return title;
         }
