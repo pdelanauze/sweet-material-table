@@ -1,5 +1,7 @@
 # sweet-material-table
 
+## No longer maintained ##
+
 A material design table implementation. Based on http://www.google.com/design/spec/components/data-tables.html
 
 ### Demo
