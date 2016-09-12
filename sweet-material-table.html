@@ -21,11 +21,16 @@
       :host {
         display: block;
       }
+
+      #table .thead .tr .th:not(.checkbox),
+      #table .tbody .tr .td:not(.checkbox) {
+        @apply(--layout-flex);
+      }
     </style>
 
-    <div id="tableHeader" class="horizontal layout">
+    <div id="tableHeader" hidden$="[[noHeader]]">
 
-      <div class="label flex primary-title">
+      <div class="label primary-title">
         <template is="dom-if" if="[[customTitleContent]]">
           <content select="[[customTitleContent]]"></content>
         </template>
@@ -34,7 +39,7 @@
         </template>
       </div>
 
-      <div class="label flex alternate-title">[[alternateHeaderTitle]]</div>
+      <div class="label alternate-title">[[alternateHeaderTitle]]</div>
       <div class="actions">
 
         <template is="dom-repeat" items="[[bulkActions]]" as="action">
@@ -94,12 +99,12 @@
 
       <template is="dom-if" if="[[!customTheadContent]]">
         <div class="thead">
-          <div class="tr horizontal layout">
+          <div class="tr">
             <div class="th checkbox">
               <paper-checkbox id="selectAll" on-click="_selectAll"></paper-checkbox>
             </div>
             <template is="dom-repeat" items="{{columns}}" as="column">
-              <div class="flex th" data-column$="[[column.key]]" on-click="_sortColumn">
+              <div class="th" data-column$="[[column.key]]" on-click="_sortColumn">
 
                 <iron-icon class="sorted-descending"
                            icon="icons:arrow-drop-down"></iron-icon>
@@ -112,7 +117,7 @@
             </template>
 
             <template is="dom-if" if="[[singleActions.length]]">
-              <div class="flex th actions">&nbsp;</div>
+              <div class="th actions">&nbsp;</div>
             </template>
           </div>
         </div>
@@ -130,23 +135,22 @@
         <div class="tbody">
 
           <template is="dom-repeat" items="{{data}}" as="instance">
-            <div class="tr horizontal layout" index="[[index]]">
+            <div class="tr" index="[[index]]">
               <div class="td checkbox">
                 <paper-checkbox on-click="_selectRow" index="[[index]]"></paper-checkbox>
               </div>
 
               <template is="dom-repeat" items="{{columns}}" as="column">
 
-                <div class="flex td">
-                  <sweet-material-table-item class="flex"
-                                             field="[[column]]"
+                <div class="td">
+                  <sweet-material-table-item field="[[column]]"
                                              data-column$="[[column.key]]"
                                              row="{{instance}}"></sweet-material-table-item>
                 </div>
               </template>
 
               <template is="dom-if" if="[[singleActions.length]]">
-                <div class="flex td actions">
+                <div class="td actions">
 
                   <paper-menu-button>
                     <paper-icon-button icon="icons:more-vert" class="dropdown-trigger"></paper-icon-button>
@@ -188,17 +192,17 @@
             <paper-item value="100" on-click="_perPageSelectionChanged">100</paper-item>
           </paper-menu>
         </paper-menu-button>
-        <span id="paginationStatus" class="flex">
-          <span>[[start]]</span>
+        <span id="paginationStatus">
+          <span>[[_getStartValue(start, total)]]</span>
           <span>-</span>
           <span>[[_getEndValue(start,perPage,total)]]</span>
           <span> of </span>
           <span>[[total]]</span>
         </span>
-        <span id="previousPage" class="flex" on-click="_previousPageClicked">
+        <span id="previousPage" on-click="_previousPageClicked">
           <iron-icon icon="icons:chevron-left"></iron-icon>
         </span>
-        <span id="nextPage" class="flex" on-click="_nextPageClicked">
+        <span id="nextPage" on-click="_nextPageClicked">
           <iron-icon icon="icons:chevron-right"></iron-icon>
         </span>
       </div>
@@ -305,6 +309,11 @@
           value: false
         },
 
+        noHeader: {
+          type: Boolean,
+          value: false
+        },
+
         _paperMenuButtonOpenAnimationConfig: {
           type: Object,
           value: function () {
@@ -333,6 +342,7 @@
         }
       },
       observers: [
+        '_dataChanged(data.splices)',
         '_schemaChanged(schema)',
         '_selectedIndexesChanged(selectedIndexes.splices)',
         '_paginationChanged(start,perPage,total)',
@@ -340,6 +350,13 @@
       ],
       ready: function () {
 
+      },
+
+      _dataChanged: function (data) {
+        var scrollableContent = this.$.table.querySelector('.tbody');
+        if (scrollableContent) {
+          scrollableContent.scrollTop = 0;
+        }
       },
 
       _schemaChanged: function () {
@@ -374,7 +391,7 @@
         var nextPageEl = this.$$('#nextPage');
 
         if (previousPageEl) {
-          if (start === 0) {
+          if (start <= 1) {
             previousPageEl.classList.add('disabled');
           } else {
             previousPageEl.classList.remove('disabled');
@@ -382,7 +399,7 @@
         }
 
         if (nextPageEl) {
-          if (start + perPage >= total) {
+          if (start + perPage > total) {
             nextPageEl.classList.add('disabled');
           } else {
             nextPageEl.classList.remove('disabled');
@@ -392,7 +409,6 @@
       },
 
       _getTitle: function (title, schemaTitle) {
-        debugger;
         if (title) {
           return title;
         }
@@ -400,6 +416,10 @@
           return schemaTitle;
         }
         return '';
+      },
+      _getStartValue: function (start, total) {
+        if (total === 0) return 0;
+        else return start;
       },
       _getEndValue: function (start, perPage) {
         var end = start + perPage - 1;
@@ -420,8 +440,8 @@
           return;
         }
         var newStart = this.start - this.perPage;
-        if (newStart < 0) {
-          this.start = 0;
+        if (newStart < 1) {
+          this.start = 1;
         } else {
           this.start = newStart;
         }
