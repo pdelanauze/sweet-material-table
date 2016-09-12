@@ -23,7 +23,7 @@
       }
     </style>
 
-    <div id="tableHeader" class="horizontal layout">
+    <div id="tableHeader" class="horizontal layout" hidden$="[[noHeader]]">
 
       <div class="label flex primary-title">
         <template is="dom-if" if="[[customTitleContent]]">
@@ -302,6 +302,11 @@
         },
         customTfootContent: {
           type: String,
+          value: false
+        },
+
+        noHeader: {
+          type: Boolean,
           value: false
         },
 
